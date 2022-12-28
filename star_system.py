@@ -95,7 +95,7 @@ class StarSystemBody:
     ):
         # Setting physical properties
         self.star_system = star_system
-        self.mass = mass * u.M_earth
+        self.mass = mass
         self.position = np.array(position, dtype=np.double) * u.AU
         self.velocity = np.array(velocity, dtype=np.double) * u.AU / u.d
         self.acc = np.zeros(3, dtype=np.double) * u.AU / (u.d ** 2)
