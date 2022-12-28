@@ -5,8 +5,6 @@ from sol import *
 
 import config
 
-MAX_DAYS = 10000
-
 
 if __name__ == '__main__':
     plt.style.use('dark_background')
