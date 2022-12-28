@@ -1,5 +1,6 @@
 import numpy as np
 from astroquery.jplhorizons import Horizons
+from astropy import units as u
 
 from star_system import StarSystemBody
 from utils import convert_K_to_RGB
@@ -21,7 +22,7 @@ class Sun(StarSystemBody):
         b = Horizons(id='Sun', location="@sun", epochs=SIM_START_DATE.jd).vectors()
         position = np.array([np.double(b[xi]) for xi in ['x', 'y', 'z']], dtype=np.double)
         velocity = np.array([np.double(b[vxi]) for vxi in ['vx', 'vy', 'vz']], dtype=np.double)
-        super(Sun, self).__init__(sol, 333030, position, velocity, name=self.name, radius=20)
+        super(Sun, self).__init__(sol, 333030 * u.Mearth, position, velocity, name=self.name, radius=20)
         self.colour = convert_K_to_RGB(5778)
 
 
@@ -32,7 +33,7 @@ class Mercury(StarSystemBody):
         b = Horizons(id='Mercury bary', location="@sun", epochs=SIM_START_DATE.jd).vectors()
         position = np.array([np.double(b[xi]) for xi in ['x', 'y', 'z']], dtype=np.double)
         velocity = np.array([np.double(b[vxi]) for vxi in ['vx', 'vy', 'vz']], dtype=np.double)
-        super(Mercury, self).__init__(sol, 0.055, position, velocity, name=self.name, radius=7)
+        super(Mercury, self).__init__(sol, 0.055 * u.Mearth, position, velocity, name=self.name, radius=7)
         self.colour = '#708090'
 
 
@@ -43,7 +44,7 @@ class Venus(StarSystemBody):
         b = Horizons(id='Venus bary', location="@sun", epochs=SIM_START_DATE.jd).vectors()
         position = np.array([np.double(b[xi]) for xi in ['x', 'y', 'z']], dtype=np.double)
         velocity = np.array([np.double(b[vxi]) for vxi in ['vx', 'vy', 'vz']], dtype=np.double)
-        super(Venus, self).__init__(sol, 0.815, position, velocity, name=self.name, radius=10)
+        super(Venus, self).__init__(sol, 0.815 * u.Mearth, position, velocity, name=self.name, radius=10)
         self.colour = '#ffffe0'
 
 
@@ -54,7 +55,7 @@ class Earth(StarSystemBody):
         b = Horizons(id='399', location="@sun", epochs=SIM_START_DATE.jd).vectors()
         position = np.array([np.double(b[xi]) for xi in ['x', 'y', 'z']], dtype=np.double)
         velocity = np.array([np.double(b[vxi]) for vxi in ['vx', 'vy', 'vz']], dtype=np.double)
-        super(Earth, self).__init__(sol, 1, position, velocity, name=self.name, radius=10)
+        super(Earth, self).__init__(sol, 1 * u.Mearth, position, velocity, name=self.name, radius=10)
         self.colour = '#287AB8'
 
 
@@ -65,7 +66,7 @@ class Moon(StarSystemBody):
         b = Horizons(id='301', location="@sun", epochs=SIM_START_DATE.jd).vectors()
         position = np.array([np.double(b[xi]) for xi in ['x', 'y', 'z']], dtype=np.double)
         velocity = np.array([np.double(b[vxi]) for vxi in ['vx', 'vy', 'vz']], dtype=np.double)
-        super(Moon, self).__init__(sol, 1, position, velocity, name=self.name, radius=4)
+        super(Moon, self).__init__(sol, 0.074 * u.Mearth, position, velocity, name=self.name, radius=4)
         self.colour = '#7d7d7d'
 
 
@@ -76,7 +77,7 @@ class Mars(StarSystemBody):
         b = Horizons(id='Mars bary', location="@sun", epochs=SIM_START_DATE.jd).vectors()
         position = np.array([np.double(b[xi]) for xi in ['x', 'y', 'z']], dtype=np.double)
         velocity = np.array([np.double(b[vxi]) for vxi in ['vx', 'vy', 'vz']], dtype=np.double)
-        super(Mars, self).__init__(sol, 1, position, velocity, name=self.name, radius=7)
+        super(Mars, self).__init__(sol, 0.107 * u.Mearth, position, velocity, name=self.name, radius=7)
         self.colour = 'chocolate'
 
 
@@ -87,7 +88,7 @@ class Ceres(StarSystemBody):
         b = Horizons(id='Ceres', location="@sun", epochs=SIM_START_DATE.jd).vectors()
         position = np.array([np.double(b[xi]) for xi in ['x', 'y', 'z']], dtype=np.double)
         velocity = np.array([np.double(b[vxi]) for vxi in ['vx', 'vy', 'vz']], dtype=np.double)
-        super(Ceres, self).__init__(sol, 1, position, velocity, name=self.name, radius=5)
+        super(Ceres, self).__init__(sol, 0.00016 * u.Mearth, position, velocity, name=self.name, radius=5)
         self.colour = '#9d97a4'
 
 
@@ -98,7 +99,7 @@ class Jupiter(StarSystemBody):
         b = Horizons(id='Jupiter bary', location="@sun", epochs=SIM_START_DATE.jd).vectors()
         position = np.array([np.double(b[xi]) for xi in ['x', 'y', 'z']], dtype=np.double)
         velocity = np.array([np.double(b[vxi]) for vxi in ['vx', 'vy', 'vz']], dtype=np.double)
-        super(Jupiter, self).__init__(sol, 1, position, velocity, name=self.name, radius=15)
+        super(Jupiter, self).__init__(sol, 317.8 * u.Mearth, position, velocity, name=self.name, radius=15)
         self.colour = '#bcafb2'
 
 
@@ -109,7 +110,7 @@ class Saturn(StarSystemBody):
         b = Horizons(id='Saturn bary', location="@sun", epochs=SIM_START_DATE.jd).vectors()
         position = np.array([np.double(b[xi]) for xi in ['x', 'y', 'z']], dtype=np.double)
         velocity = np.array([np.double(b[vxi]) for vxi in ['vx', 'vy', 'vz']], dtype=np.double)
-        super(Saturn, self).__init__(sol, 1, position, velocity, name=self.name, radius=14)
+        super(Saturn, self).__init__(sol, 95.16 * u.Mearth, position, velocity, name=self.name, radius=14)
         self.colour = '#a68a60'
 
 
@@ -120,7 +121,7 @@ class Uranus(StarSystemBody):
         b = Horizons(id='Uranus bary', location="@sun", epochs=SIM_START_DATE.jd).vectors()
         position = np.array([np.double(b[xi]) for xi in ['x', 'y', 'z']], dtype=np.double)
         velocity = np.array([np.double(b[vxi]) for vxi in ['vx', 'vy', 'vz']], dtype=np.double)
-        super(Uranus, self).__init__(sol, 1, position, velocity, name=self.name, radius=13)
+        super(Uranus, self).__init__(sol, 14.54 * u.Mearth, position, velocity, name=self.name, radius=13)
         self.colour = '#d1e7e7'
 
 
@@ -131,7 +132,7 @@ class Neptune(StarSystemBody):
         b = Horizons(id='Neptune bary', location="@sun", epochs=SIM_START_DATE.jd).vectors()
         position = np.array([np.double(b[xi]) for xi in ['x', 'y', 'z']], dtype=np.double)
         velocity = np.array([np.double(b[vxi]) for vxi in ['vx', 'vy', 'vz']], dtype=np.double)
-        super(Neptune, self).__init__(sol, 1, position, velocity, name=self.name, radius=13)
+        super(Neptune, self).__init__(sol, 17.15 * u.Mearth, position, velocity, name=self.name, radius=13)
         self.colour = '#5b5ddf'
 
 
@@ -142,6 +143,6 @@ class Pluto(StarSystemBody):
         b = Horizons(id='Pluto bary', location="@sun", epochs=SIM_START_DATE.jd).vectors()
         position = np.array([np.double(b[xi]) for xi in ['x', 'y', 'z']], dtype=np.double)
         velocity = np.array([np.double(b[vxi]) for vxi in ['vx', 'vy', 'vz']], dtype=np.double)
-        super(Pluto, self).__init__(sol, 1, position, velocity, name=self.name, radius=5)
+        super(Pluto, self).__init__(sol, 0.00218 * u.Mearth, position, velocity, name=self.name, radius=5)
         self.colour = '#fff1d5'
 
