@@ -12,7 +12,7 @@ if __name__ == '__main__':
     plt.style.use('dark_background')
 
     # Size in AU
-    Sol = StarSystem(10)
+    Sol = StarSystem(50)
 
     sun = Sun(Sol)
     planets = (
@@ -23,6 +23,10 @@ if __name__ == '__main__':
         Mars(Sol),
         Ceres(Sol),
         Jupiter(Sol),
+        Saturn(Sol),
+        Uranus(Sol),
+        Neptune(Sol),
+        Pluto(Sol),
     )
 
     i = config.MAX_DAYS
