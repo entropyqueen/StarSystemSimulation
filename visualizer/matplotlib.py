@@ -2,7 +2,7 @@ from astropy import units as u
 import matplotlib.pyplot as plt
 
 import config
-from physics.star_system import StarSystemBody
+from physics.universe import StarSystemObject
 
 
 class MatplotlibVisualizer:
@@ -21,7 +21,7 @@ class MatplotlibVisualizer:
         self.fig.tight_layout()
 
     def add_object(self, body):
-        if not isinstance(body, StarSystemBody):
+        if not isinstance(body, StarSystemObject):
             raise
         self.bodies.append(body)
 

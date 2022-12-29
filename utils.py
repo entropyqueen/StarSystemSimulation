@@ -6,7 +6,9 @@ def hex_to_rgb(h):
     :param h: #RRGGBB
     :return: (r, g, b)
     """
-    return tuple(int(h.lstrip('#')[i:i+2], 16) for i in (0, 2, 4))
+    if isinstance(h, str):
+        return tuple(int(h.lstrip('#')[i:i+2], 16) for i in (0, 2, 4))
+    return h
 
 def hex_to_rgb_norm(h):
     """
@@ -14,7 +16,9 @@ def hex_to_rgb_norm(h):
     :param h: #RRGGBB
     :return: (r, g, b)
     """
-    return tuple(int(h.lstrip('#')[i:i+2], 16) / 255 for i in (0, 2, 4))
+    if isinstance(h, str):
+        return tuple(int(h.lstrip('#')[i:i+2], 16) / 255 for i in (0, 2, 4))
+    return h
 
 def convert_K_to_RGB(colour_temperature):
     """

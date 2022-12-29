@@ -7,10 +7,8 @@ import config
 
 class Universe:
 
-    def __init__(self, display, size):
-        self.display = display
-        self.size = size
-        self.bodies = []
+    def __init__(self):
+        self.objects = []
         self.dt = config.SIM_DT
         self.iterations = 0
         self.date = config.SIM_START_DATE
@@ -20,13 +18,13 @@ class Universe:
 
     def __repr__(self):
         obj = []
-        for b in self.bodies:
+        for b in self.objects:
             obj.append(repr(b))
         return ''.join(obj)
 
     def __str__(self):
         obj = []
-        for i, b in enumerate(self.bodies):
+        for i, b in enumerate(self.objects):
             obj.append(f'Body: #{i}\n{str(b)}')
         return '\n------------\n'.join(obj)
 
@@ -36,7 +34,7 @@ class Universe:
             self.csv = True
         else:
             s = ''
-        for b in self.bodies:
+        for b in self.objects:
             s += f'{b.name},' \
                  f'{str(np.linalg.norm(b.position) / u.AU)},' \
                  f'{str(np.linalg.norm(b.velocity) / (u.AU / u.d))},' \
@@ -45,19 +43,18 @@ class Universe:
         return s
 
     def run(self):
-        self.display.draw_all()
-        self.update_all()
+        self.update()
 
-    def add_body(self, body):
-        self.bodies.append(body)
+    def add_object(self, obj):
+        self.objects.append(obj)
 
-    def update_all(self):
+    def update(self):
         self.iterations += 1
         self.date += config.SIM_DT
-        for body in self.bodies:
-            body.update_position(self.dt)
+        for obj in self.objects:
+            obj.update_position(self.dt)
 
-class StarSystemBody:
+class StarSystemObject:
 
     def __init__(
             self,
@@ -65,10 +62,9 @@ class StarSystemBody:
             mass,
             position=(0, 0, 0),
             velocity=(0, 0, 0),
-            colour='black',
+            color='black',
             name='object',
             radius=10,
-            display_class=None,
     ):
         # Setting physical properties
         self.universe = universe
@@ -78,16 +74,10 @@ class StarSystemBody:
         self.acc = np.zeros(3, dtype=np.double) * u.AU / (u.d ** 2)
 
         self.radius = radius
-        self.colour = colour
+        self.color = color
         self.name = name
-        if display_class is not None:
-            self.display = display_class(
-                self, self.name, self.position, self.radius, self.colour, self.universe.display
-            )
-        else:
-            self.display = None
 
-        self.universe.add_body(self)
+        self.universe.add_object(self)
 
     def __repr__(self):
         s = f'<{self.name}, {self.mass}, pos:{self.position},vel:{self.velocity},acc:\t{self.acc}'
@@ -113,7 +103,7 @@ class StarSystemBody:
     # INTEGRATE THE POSITIONS OF BODIES
     def update_position(self, dt):
         acc = 0
-        for body in self.universe.bodies:
+        for body in self.universe.objects:
             if self == body:
                 continue
             acc += self.calculate_acceleration(body)

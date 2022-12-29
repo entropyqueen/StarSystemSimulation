@@ -4,6 +4,9 @@ from panda3d.core import WindowProperties, Vec3
 
 import config
 from utils import hex_to_rgb_norm
+from physics.universe import Universe
+from physics.sol import create_Sol_system
+from visualizer.panda3d_object_display import ObjectDisplay
 
 
 class PandaVisualizer(ShowBase):
@@ -30,17 +33,29 @@ class PandaVisualizer(ShowBase):
             'ZOOM_OUT': False,
             'MVT_SPEED+': False,
             'MVT_SPEED-': False,
+            'TARGET_PREV': False,
+            'TARGET_NEXT': False,
             'QUIT': False,
         }
         self.init_controls()
         self.cam_speed = config.CAM_SPEED
         self.cam_rotation_speed = config.CAM_ROTATION_SPEED
-        self.updateTask = self.taskMgr.add(self.keyboard_control, "keyboardControl")
-        self.last_mouse_x, self.last_mouse_y = None, None
-        self.mouseTask = self.taskMgr.add(self.mouse_control, "MouseControl")
+        self.keyboard_task = self.taskMgr.add(self.keyboard_control, 'keyboard_control')
+        self.last_mouse_x, self.last_mouse_y = 0, 0
+        self.mouse_task = self.taskMgr.add(self.mouse_control, 'mouse_control')
 
         self.init_default_display()
-        self.foobar()
+        # self.foobar()
+
+        # Initialize Universe, and populate with Sol
+        self.universe = Universe()
+        sol = create_Sol_system(self.universe)
+        self.objects_to_display = []
+        for obj in sol:
+            self.objects_to_display.append(ObjectDisplay(obj))
+        self.selected_object_iter = 0
+        self.selected_object = self.objects_to_display[self.selected_object_iter]
+        self.update_task = self.taskMgr.add(self.update, 'update')
 
     def init_controls(self):
         self.disableMouse()
@@ -54,7 +69,7 @@ class PandaVisualizer(ShowBase):
 
     def init_default_display(self):
         self.setBackgroundColor(*hex_to_rgb_norm('#000000'))
-        self.cam.setPos(0.0, -10, 10.0)
+        self.cam.setPos(0, -20, 20)
         self.cam.lookAt(0, 0, 0)
 
     def keyboard_control(self, task):
@@ -98,6 +113,10 @@ class PandaVisualizer(ShowBase):
             pass
         if self.keymap['ZOOM_OUT']:
             pass
+        if self.keymap['TARGET_PREV']:
+            self.cam.lookAt(*self.select_object('prev').pos)
+        if self.keymap['TARGET_NEXT']:
+            self.cam.lookAt(*self.select_object('next').pos)
         if self.keymap['QUIT']:
             sys.exit(0)
         return task.cont
@@ -116,14 +135,35 @@ class PandaVisualizer(ShowBase):
         self.cam.setP(self.cam, dy)
         return task.cont
 
-    def recenterMouse(self):
-        self.win.movePointer(
-            0,
-            int(self.win.getProperties().getXSize() / 2),
-            int(self.win.getProperties().getYSize() / 2)
-        )
-        self.last_mouse_x, self.last_mouse_y = 0, 0
+    def update(self, task):
+        dt = globalClock.getDt()
+
+        if config.VERBOSE:
+            print('===============================================================')
+            print(str(self.universe))
+
+        if config.CSV:
+            with open(config.CSV_OUTPUT, 'w') as f:
+                f.write(self.universe.to_csv())
+        self.universe.update()
+        for obj in self.objects_to_display:
+            obj.update()
+
+        return task.cont
+
+    def select_object(self, direction):
+        if direction == 'next':
+            self.selected_object_iter += 1
+        else:
+            self.selected_object_iter -= 1
+        if self.selected_object_iter < 0:
+            self.selected_object_iter = len(self.objects_to_display) - 1
+        elif self.selected_object_iter >= len(self.objects_to_display):
+            self.selected_object_iter = 0
+        self.selected_object = self.objects_to_display[self.selected_object_iter]
+        return self.selected_object
 
     def foobar(self):
         axis = self.loader.loadModel('models/zup-axis')
         axis.reparentTo(self.render)
+

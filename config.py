@@ -67,6 +67,8 @@ KEYMAP = {
     'ZOOM_OUT': 'wheel_down',
     'MVT_SPEED+': '=',
     'MVT_SPEED-': '-',
+    'TARGET_PREV': 'arrow_left',
+    'TARGET_NEXT': 'arrow_right',
     'QUIT': 'escape'
 }
 
