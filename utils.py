@@ -73,6 +73,4 @@ def convert_K_to_RGB(colour_temperature):
         else:
             blue = tmp_blue
 
-    return tuple(map(lambda div: div/255.0, (red, green, blue))) + [1]
-
-
+    return tuple(map(lambda div: div/255.0, (red, green, blue)))

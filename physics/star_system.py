@@ -1,5 +1,3 @@
-import math
-import matplotlib.pyplot as plt
 import numpy as np
 from astropy import units as u
 from astropy import constants as c
@@ -7,23 +5,15 @@ from astropy import constants as c
 import config
 
 
-class StarSystem:
+class Universe:
 
-    def __init__(self, size):
-        self.size = size  # size of the graph in AU
+    def __init__(self, display, size):
+        self.display = display
+        self.size = size
         self.bodies = []
         self.dt = config.SIM_DT
         self.iterations = 0
         self.date = config.SIM_START_DATE
-
-        # plot stuf
-        self.fig, self.ax = plt.subplots(
-            1,
-            1,
-            subplot_kw={"projection": "3d"},
-            figsize=(config.FIG_SIZE, config.FIG_SIZE),
-        )
-        self.fig.tight_layout()
 
         # used to print first csv line only once
         self.csv = False
@@ -56,7 +46,6 @@ class StarSystem:
 
     def run(self):
         self.update_all()
-        self.draw_all()
 
     def add_body(self, body):
         self.bodies.append(body)
@@ -67,25 +56,11 @@ class StarSystem:
         for body in self.bodies:
             body.update_position(self.dt)
 
-    def draw_all(self):
-        # set axis boundaries in AU
-        self.ax.set_xlim((-self.size / 2, self.size / 2))
-        self.ax.set_ylim((-self.size / 2, self.size / 2))
-        self.ax.set_zlim((-self.size / 2, self.size / 2))
-
-        # Display simulation date
-        for body in sorted(self.bodies, key=lambda item: item.position[0]):
-            body.draw()
-        # Slow down time ... :3
-        plt.pause(config.FRAME_RATE)
-        self.ax.clear()
-
-
 class StarSystemBody:
 
     def __init__(
             self,
-            star_system,
+            universe,
             mass,
             position=(0, 0, 0),
             velocity=(0, 0, 0),
@@ -94,7 +69,7 @@ class StarSystemBody:
             radius=10,
     ):
         # Setting physical properties
-        self.star_system = star_system
+        self.universe = universe
         self.mass = mass
         self.position = np.array(position, dtype=np.double) * u.AU
         self.velocity = np.array(velocity, dtype=np.double) * u.AU / u.d
@@ -104,7 +79,7 @@ class StarSystemBody:
         self.colour = colour
         self.name = name
 
-        self.star_system.add_body(self)
+        self.universe.add_body(self)
 
     def __repr__(self):
         s = f'<{self.name}, {self.mass}, pos:{self.position},vel:{self.velocity},acc:\t{self.acc}'
@@ -118,28 +93,6 @@ class StarSystemBody:
             f'f:\t\t\t{np.linalg.norm(self.acc * self.mass).to(u.N):.3e}'
         return s
 
-    def draw(self):
-        self.star_system.ax.plot(
-            *self.position,
-            marker="o",
-            markersize=self.radius,
-            color=self.colour
-        )
-        self.star_system.ax.plot(
-            self.position[0],
-            self.position[1],
-            -self.star_system.size / 2,
-            marker="o",
-            markersize=self.radius / 2,
-            color=(0, 0, 0),
-        )
-        self.star_system.ax.text(
-            self.position[0] / u.AU + (0.015 * self.radius / 2),
-            self.position[1] / u.AU + (0.015 * self.radius / 2),
-            self.position[2] / u.AU,
-            self.name
-        )
-
     # COMPUTE ACCELERATION
     def calculate_acceleration(self, other):
         dst = np.linalg.norm(other.position - self.position)  # distance in AU
@@ -152,7 +105,7 @@ class StarSystemBody:
     # INTEGRATE THE POSITIONS OF BODIES
     def update_position(self, dt):
         acc = 0
-        for body in self.star_system.bodies:
+        for body in self.universe.bodies:
             if self == body:
                 continue
             acc += self.calculate_acceleration(body)
