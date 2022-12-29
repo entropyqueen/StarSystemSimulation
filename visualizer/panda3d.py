@@ -8,7 +8,7 @@ import config
 from utils import hex_to_rgb_norm
 
 
-class Visualizer(ShowBase):
+class PandaVisualizer(ShowBase):
     def __init__(self):
         ShowBase.__init__(self)
 
@@ -96,7 +96,7 @@ class Visualizer(ShowBase):
                 self.cam_speed = config.MIN_CAM_ROTATION_SPEED
         if self.keymap['ZOOM_IN']:
             # Zooming is FWD ?
-            # Or applying a coefficient to distances / changing universe size?
+            # Or applying a coefficient to distances / changing u size?
             pass
         if self.keymap['ZOOM_OUT']:
             pass
@@ -129,9 +129,3 @@ class Visualizer(ShowBase):
     def foobar(self):
         axis = self.loader.loadModel('models/zup-axis')
         axis.reparentTo(self.render)
-
-        sphere = self.loader.loadModel('./models/sphere.glb')
-        sphere.setScale(1, 1, 1)
-        sphere.setPos(0, 0, 0)
-        sphere.setColor(*hex_to_rgb_norm('#5b5ddf'))
-        sphere.reparentTo(self.render)

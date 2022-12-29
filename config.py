@@ -39,6 +39,7 @@ csv_output = './logs.csv'
 
 # Time between each frame
 FRAME_RATE = 0.0001
+FIG_SIZE = 20
 
 # Graph display size in pixels
 DISPLAY_WIDTH = 1200
