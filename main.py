@@ -10,7 +10,8 @@ import config
 if __name__ == '__main__':
 
     # u = Universe(PandaVisualizer, 10)
-    u = MatplotlibVisualizer()
+    #u = MatplotlibVisualizer()
+    u = Universe(None, 10)
 
     # Load Universe passing viewer'
     #       Universe class shall register it's update() method to viewer
@@ -44,13 +45,13 @@ if __name__ == '__main__':
 
     i = config.MAX_DAYS
     while i:
-        if config.verbose:
+        if config.VERBOSE:
             print('===============================================================')
             print(f'Simulation Day #{config.MAX_DAYS - i}')
             print(str(u))
 
-        if config.csv:
-            with open(config.csv_output, 'w') as f:
+        if config.CSV:
+            with open(config.CSV_OUTPU, 'w') as f:
                 f.write(u.to_csv())
         u.run()
         i -= 1

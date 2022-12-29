@@ -26,11 +26,11 @@ SIM_DT = 1 * units.d
 DEBUG = False
 
 # Enable verbose
-verbose = False
+VERBOSE = True
 
 # Enable dumping of position, velocity and accelerations to CSV
-csv = False
-csv_output = './logs.csv'
+CSV = False
+CSV_OUTPUT = './logs.csv'
 
 
 ##########################
