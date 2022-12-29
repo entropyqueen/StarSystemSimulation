@@ -37,13 +37,20 @@ CSV_OUTPUT = './logs.csv'
 #         Display        #
 ##########################
 
+# MATPLOTLIB SPECIFICS
+# those are unused when using panda3d display
 # Time between each frame
 FRAME_RATE = 0.0001
 FIG_SIZE = 20
 
-# Graph display size in pixels
+# PANDA SPECIFICS
+# those are unused when using matplotlib display
+# Display size in pixels
 DISPLAY_WIDTH = 1200
 DISPLAY_HEIGHT = 800
+
+ZOOM_FACTOR_STEP = 2
+DEFAULT_ZOOM = 100
 
 ##########################
 #         Keymap         #
@@ -52,7 +59,9 @@ DISPLAY_HEIGHT = 800
 # key definition is the one used by panda3d
 # https://docs.panda3d.org/1.10/python/programming/hardware-support/keyboard-support
 # except for mouse_x and mouse_y which are built-ins
-KEYMAP = {
+
+# Those are the keys that can stay pressed
+KEYMAP_REP = {
     'UP': 'r',
     'DOWN': 'f',
     'FWD': 'w',
@@ -63,22 +72,27 @@ KEYMAP = {
     'PITCH': 'mouse_y',
     'ROLL_R': 'e',
     'ROLL_L': 'q',
-    'ZOOM_IN': 'wheel_up',
-    'ZOOM_OUT': 'wheel_down',
     'MVT_SPEED+': '=',
     'MVT_SPEED-': '-',
+}
+
+# Those are the keys whose effect is not repeated
+KEYMAP_ONCE = {
+    'ZOOM_IN': 'wheel_up',
+    'ZOOM_OUT': 'wheel_down',
     'TARGET_PREV': 'arrow_left',
     'TARGET_NEXT': 'arrow_right',
+    'TARGET_LOCK': 'l',
     'QUIT': 'escape'
 }
 
 CAM_SPEED = 10
-CAM_SPEED_STEP = 5
+CAM_SPEED_STEP = 2
 MIN_CAM_SPEED = 5
-MAX_CAM_SPEED = 100
+MAX_CAM_SPEED = 10000
 
 CAM_ROTATION_SPEED = 50
-CAM_ROTATION_SPEED_STEP = 10
+CAM_ROTATION_SPEED_STEP = 2
 MIN_CAM_ROTATION_SPEED = 10
 MAX_CAM_ROTATION_SPEED = 120
 

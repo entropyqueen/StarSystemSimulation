@@ -12,6 +12,7 @@ class Universe:
         self.dt = config.SIM_DT
         self.iterations = 0
         self.date = config.SIM_START_DATE
+        self.str_date = self.date.strftime("%Y/%m/%d")
 
         # used to print first csv line only once
         self.csv = False
@@ -51,6 +52,7 @@ class Universe:
     def update(self):
         self.iterations += 1
         self.date += config.SIM_DT
+        self.str_date = self.date.strftime("%Y/%m/%d")
         for obj in self.objects:
             obj.update_position(self.dt)
 
