@@ -2,8 +2,6 @@ import sys
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import WindowProperties, Vec3
 
-from math import pi, sin, cos
-
 import config
 from utils import hex_to_rgb_norm
 

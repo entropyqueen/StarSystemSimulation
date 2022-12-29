@@ -45,6 +45,7 @@ class Universe:
         return s
 
     def run(self):
+        self.display.draw_all()
         self.update_all()
 
     def add_body(self, body):
@@ -67,6 +68,7 @@ class StarSystemBody:
             colour='black',
             name='object',
             radius=10,
+            display_class=None,
     ):
         # Setting physical properties
         self.universe = universe
@@ -78,6 +80,12 @@ class StarSystemBody:
         self.radius = radius
         self.colour = colour
         self.name = name
+        if display_class is not None:
+            self.display = display_class(
+                self, self.name, self.position, self.radius, self.colour, self.universe.display
+            )
+        else:
+            self.display = None
 
         self.universe.add_body(self)
 
