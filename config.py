@@ -47,6 +47,10 @@ DISPLAY_HEIGHT = 800
 ##########################
 #         Keymap         #
 ##########################
+# Keys can be re-map to anything
+# key definition is the one used by panda3d
+# https://docs.panda3d.org/1.10/python/programming/hardware-support/keyboard-support
+# except for mouse_x and mouse_y which are built-ins
 KEYMAP = {
     'UP': 'r',
     'DOWN': 'f',
@@ -70,7 +74,12 @@ CAM_SPEED_STEP = 5
 MIN_CAM_SPEED = 5
 MAX_CAM_SPEED = 100
 
-CAM_ROTATION_SPEED = 20
-CAM_ROTATION_SPEED_STEP = 5
-MIN_CAM_ROTATION_SPEED = 5
-MAX_CAM_ROTATION_SPEED = 100
+CAM_ROTATION_SPEED = 50
+CAM_ROTATION_SPEED_STEP = 10
+MIN_CAM_ROTATION_SPEED = 10
+MAX_CAM_ROTATION_SPEED = 120
+
+# Between 0 and whatever, but we multiply by that number :D
+MOUSE_SENSITIVITY = 5
+MOUSE_INVERT_X = False
+MOUSE_INVERT_Y = False

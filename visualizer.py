@@ -7,14 +7,17 @@ from math import pi, sin, cos
 import config
 from utils import hex_to_rgb_norm
 
+
 class Visualizer(ShowBase):
     def __init__(self):
         ShowBase.__init__(self)
 
         # Window properties
-        properties = WindowProperties()
-        properties.setSize(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT)
-        self.win.requestProperties(properties)
+        wp = WindowProperties()
+        wp.setMouseMode(WindowProperties.M_relative)
+        wp.setCursorHidden(True)
+        wp.setSize(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT)
+        self.win.requestProperties(wp)
 
         self.keymap = {
             'FWD': False,
@@ -34,7 +37,9 @@ class Visualizer(ShowBase):
         self.init_controls()
         self.cam_speed = config.CAM_SPEED
         self.cam_rotation_speed = config.CAM_ROTATION_SPEED
-        self.updateTask = self.taskMgr.add(self.update, "update")
+        self.updateTask = self.taskMgr.add(self.keyboard_control, "keyboardControl")
+        self.last_mouse_x, self.last_mouse_y = None, None
+        self.mouseTask = self.taskMgr.add(self.mouse_control, "MouseControl")
 
         self.init_default_display()
         self.foobar()
@@ -54,7 +59,7 @@ class Visualizer(ShowBase):
         self.cam.setPos(0.0, -10, 10.0)
         self.cam.lookAt(0, 0, 0)
 
-    def update(self, task):
+    def keyboard_control(self, task):
         dt = globalClock.getDt()
         s = self.cam_speed
         r = self.cam_rotation_speed
@@ -98,6 +103,28 @@ class Visualizer(ShowBase):
         if self.keymap['QUIT']:
             sys.exit(0)
         return task.cont
+
+    def mouse_control(self, task):
+        x, y, dx, dy = 0, 0, 0, 0
+        mw = self.mouseWatcherNode
+        has_mouse = mw.hasMouse()
+        if has_mouse:
+            x, y = mw.getMouseX(), mw.getMouseY()
+            dx = (self.last_mouse_x - x) * 10 * config.MOUSE_SENSITIVITY
+            dy = (y - self.last_mouse_y) * 10 * config.MOUSE_SENSITIVITY
+
+        self.last_mouse_x, self.last_mouse_y = x, y
+        self.cam.setH(self.cam, dx)
+        self.cam.setP(self.cam, dy)
+        return task.cont
+
+    def recenterMouse(self):
+        self.win.movePointer(
+            0,
+            int(self.win.getProperties().getXSize() / 2),
+            int(self.win.getProperties().getYSize() / 2)
+        )
+        self.last_mouse_x, self.last_mouse_y = 0, 0
 
     def foobar(self):
         axis = self.loader.loadModel('models/zup-axis')
