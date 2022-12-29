@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 
+from visualizer import Visualizer
 from star_system import StarSystem
 from sol import *
 
@@ -7,10 +8,14 @@ import config
 
 
 if __name__ == '__main__':
+
+    viewer = Visualizer()
+    viewer.run()
+
     plt.style.use('dark_background')
 
     # Size in AU
-    Sol = StarSystem(50)
+    Sol = StarSystem(10)
 
     sun = Sun(Sol)
     planets = (

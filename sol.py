@@ -78,7 +78,7 @@ class Mars(StarSystemBody):
         position = np.array([np.double(b[xi]) for xi in ['x', 'y', 'z']], dtype=np.double)
         velocity = np.array([np.double(b[vxi]) for vxi in ['vx', 'vy', 'vz']], dtype=np.double)
         super(Mars, self).__init__(sol, 0.107 * u.Mearth, position, velocity, name=self.name, radius=7)
-        self.colour = 'chocolate'
+        self.colour = '#69340f'
 
 
 class Ceres(StarSystemBody):
@@ -145,4 +145,3 @@ class Pluto(StarSystemBody):
         velocity = np.array([np.double(b[vxi]) for vxi in ['vx', 'vy', 'vz']], dtype=np.double)
         super(Pluto, self).__init__(sol, 0.00218 * u.Mearth, position, velocity, name=self.name, radius=5)
         self.colour = '#fff1d5'
-
