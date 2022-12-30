@@ -50,7 +50,7 @@ DISPLAY_WIDTH = 1200
 DISPLAY_HEIGHT = 800
 
 ZOOM_FACTOR_STEP = 2
-DEFAULT_ZOOM = 100
+DEFAULT_ZOOM = 1
 
 ##########################
 #         Keymap         #
@@ -82,17 +82,18 @@ KEYMAP_ONCE = {
     'ZOOM_OUT': 'wheel_down',
     'TARGET_PREV': 'arrow_left',
     'TARGET_NEXT': 'arrow_right',
-    'TARGET_LOCK': 'l',
+    'FOCUS_TARGET': 'l',
+    'PAUSE': 'p',
     'QUIT': 'escape'
 }
 
 CAM_SPEED = 10
-CAM_SPEED_STEP = 2
-MIN_CAM_SPEED = 5
+CAM_SPEED_STEP = 1.5
+MIN_CAM_SPEED = 0.2
 MAX_CAM_SPEED = 10000
 
 CAM_ROTATION_SPEED = 50
-CAM_ROTATION_SPEED_STEP = 2
+CAM_ROTATION_SPEED_STEP = 1.5
 MIN_CAM_ROTATION_SPEED = 10
 MAX_CAM_ROTATION_SPEED = 120
 

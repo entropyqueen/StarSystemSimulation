@@ -1,7 +1,9 @@
 import sys
 from direct.showbase.ShowBase import ShowBase
-from panda3d.core import WindowProperties, Vec3
+from panda3d.core import WindowProperties, Vec3, LPoint3f
 from direct.gui.OnscreenText import OnscreenText, TextNode
+from astropy import units as u
+import numpy as np
 
 import config
 from utils import hex_to_rgb_norm
@@ -15,6 +17,7 @@ class PandaVisualizer(ShowBase):
         super().__init__()
 
         # Window properties
+        self.sim_paused = False
         wp = WindowProperties()
         wp.setMouseMode(WindowProperties.M_relative)
         wp.setCursorHidden(True)
@@ -34,17 +37,17 @@ class PandaVisualizer(ShowBase):
         self.keymap_rep = {}
         for k in config.KEYMAP_REP.keys():
             self.keymap_rep[k] = False
-        self.focus_selected = False
         self.init_controls()
         self.cam_speed = config.CAM_SPEED
         self.cam_rotation_speed = config.CAM_ROTATION_SPEED
         self.last_mouse_x, self.last_mouse_y = 0, 0
 
         # Initialize Universe, and populate with Sol
+        self.units = u.Rjup
         self.universe = Universe()
         sol = create_Sol_system(self.universe)
         for obj in sol:
-            self.objects_to_display.append(ObjectDisplay(obj))
+            self.objects_to_display.append(ObjectDisplay(obj, units=self.units))
         self.selected_object = self.objects_to_display[self.selected_object_iter]
         self.info('sim_date', f'Simulation date: {self.universe.str_date}')
 
@@ -69,8 +72,10 @@ class PandaVisualizer(ShowBase):
                 self.accept(v, self.focus_camera_on_prev)
             if k == 'TARGET_NEXT':
                 self.accept(v, self.focus_camera_on_next)
-            if k == 'LOCK_FOCUS':
-                self.accept(v, self.toggle_focus)
+            if k == 'FOCUS_TARGET':
+                self.accept(v, self.focus_selected)
+            if k == 'PAUSE':
+                self.accept(v, self.sim_pause)
             if k == 'QUIT':
                 self.accept(v, sys.exit)
 
@@ -81,6 +86,7 @@ class PandaVisualizer(ShowBase):
         self.setBackgroundColor(*hex_to_rgb_norm('#000000'))
         self.cam.setPos(0, -20, 20)
         self.cam.lookAt(0, 0, 0)
+        self.axis()
 
     def keyboard_control(self, task):
         dt = globalClock.getDt()
@@ -104,7 +110,7 @@ class PandaVisualizer(ShowBase):
         if self.keymap_rep['ROLL_L']:
             self.cam.setHpr(self.cam, Vec3(0, 0, -r * dt))
         if self.keymap_rep['MVT_SPEED+']:
-            self.cam_speed += config.CAM_SPEED_STEP
+            self.cam_speed *= config.CAM_SPEED_STEP
             self.cam_rotation_speed *= config.CAM_ROTATION_SPEED_STEP
             if self.cam_speed > config.MAX_CAM_SPEED:
                 self.cam_speed = config.MAX_CAM_SPEED
@@ -112,7 +118,7 @@ class PandaVisualizer(ShowBase):
                 self.cam_speed = config.MAX_CAM_ROTATION_SPEED
         if self.keymap_rep['MVT_SPEED-']:
             self.cam_speed //= config.CAM_SPEED_STEP
-            self.cam_rotation_speed -= config.CAM_ROTATION_SPEED_STEP
+            self.cam_rotation_speed //= config.CAM_ROTATION_SPEED_STEP
             if self.cam_speed < config.MIN_CAM_SPEED:
                 self.cam_speed = config.MIN_CAM_SPEED
             if self.cam_speed < config.MIN_CAM_ROTATION_SPEED:
@@ -144,7 +150,7 @@ class PandaVisualizer(ShowBase):
     def update(self, task):
         dt = globalClock.getDt()
 
-        self.info('sim_date', f'Simulation date: {self.universe.str_date}')
+        self.display_infos()
         if config.VERBOSE:
             print('===============================================================')
             print(str(self.universe))
@@ -152,9 +158,12 @@ class PandaVisualizer(ShowBase):
         if config.CSV:
             with open(config.CSV_OUTPUT, 'w') as f:
                 f.write(self.universe.to_csv())
-        self.universe.update()
-        if self.focus_selected:
-            self.focus_camera_on(self.selected_object)
+
+        if not self.sim_paused:
+            self.universe.update()
+            if self.focus_selected:
+                self.focus_camera_on(self.selected_object)
+
         for obj in self.objects_to_display:
             obj.zoom_factor = self.zoom_factor
             obj.update()
@@ -176,20 +185,22 @@ class PandaVisualizer(ShowBase):
 
     def focus_camera_on(self, obj):
         # TODO: Adjust zoom object to screen size
-        self.info('focus_camera', f'Focusing on {obj.obj.name}')
         x, y, z = obj.pos
-        y -= 2 * obj.radius
-        self.cam.setPos(x, y, z)
-        self.cam.lookAt(*obj.pos)
+
+        dx = x + obj.scale * 1.5
+        dy = y + obj.scale * 1.5
+
+        self.cam.setPos(dx, dy, z)
+        self.cam.lookAt(obj.obj_node_path)
 
     def focus_camera_on_prev(self):
-        self.focus_camera_on(self.select_object_prev())
+        self.cam.lookAt(self.select_object_prev().obj_node_path)
 
     def focus_camera_on_next(self):
-        self.focus_camera_on(self.select_object_next())
+        self.cam.lookAt(self.select_object_next().obj_node_path)
 
-    def toggle_focus(self):
-        self.focus_selected = not self.focus_selected
+    def focus_selected(self):
+        self.focus_camera_on(self.selected_object)
 
     def foobar(self):
         axis = self.loader.loadModel('models/zup-axis')
@@ -224,10 +235,55 @@ class PandaVisualizer(ShowBase):
             # nothing to update
             pass
 
-    def del_info_text(self, key):
+    def del_info(self, key):
         try:
             if isinstance(self.info_text_ids[self.info_text[key]], OnscreenText):
                 self.info_text_ids[self.info_text[key]].destroy()
+                del self.info_text_ids[self.info_text[key]]
+                del self.info_text[key]
         except KeyError:
             # nothing to delete
             pass
+
+    def display_infos(self):
+        self.info('sim_date', f'Simulation date: {self.universe.str_date}')
+        self.info(
+            'cam_pos',
+            f'X:{self.cam.getX():.3} / Y: {self.cam.getY():.3} / Z: {self.cam.getZ():.3}'
+        )
+        self.info(
+            'cam_rot',
+            f'H:{self.cam.getH():.3} / P: {self.cam.getP():.3} / R: {self.cam.getR():.3}'
+        )
+        if self.sim_paused:
+            self.info('pause', 'Sim State: PAUSED')
+        else:
+            self.info('pause', 'Sim State: RUNNING')
+
+        self.info(
+            'focus_cam_l1',
+            f'Selected: [{self.selected_object.obj.name}]:'
+        )
+        self.info(
+            'focus_cam_l2',
+            f'\t R = {self.selected_object.obj.radius.to(u.km):.2e} '
+            f'(display size: {self.selected_object.scale:.2e})'
+        )
+        self.info(
+            'focus_cam_l3', '\t'
+            f'x: {self.selected_object.pos[0]:.2e}, '
+            f'y: {self.selected_object.pos[1]:.2e}, '
+            f'z: {self.selected_object.pos.getZ():.2e}'
+        )
+        self.info(
+            'dst_to_selected',
+            f'Distance to selected: {np.linalg.norm(tuple(self.cam.getPos() - self.selected_object.pos)):.2e}'
+        )
+        self.info('zoom', f'zoom lvl: {self.zoom_factor}')
+
+    def sim_pause(self):
+        self.sim_paused = not self.sim_paused
+
+    def axis(self):
+        axis = self.loader.loadModel('models/zup-axis')
+        axis.reparentTo(self.render)
