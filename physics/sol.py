@@ -14,6 +14,22 @@ Units:
  Masses in Earth's mass
 """
 
+texture_map = {
+    'Neptune': 'textures/2k_neptune.jpg',
+    'Ceres': 'textures/2k_ceres_fictional.jpg',
+    'Earth': 'textures/2k_earth_daymap.jpg',
+    'Mars': 'textures/2k_mars.jpg',
+    'Moon': 'textures/2k_moon.jpg',
+    'Saturn_rings': 'textures/2k_saturn_ring_alpha.png',
+    'Sun': 'textures/2k_sun.jpg',
+    'Uranus': 'textures/2k_uranus.jpg',
+    'Venus': 'textures/2k_venus_atmosphere.jpg',
+    'Jupiter': 'textures/2k_jupiter.jpg',
+    'Mercury': 'textures/2k_mercury.jpg',
+    'Saturn': 'textures/2k_saturn.jpg',
+    'MilkyWay': 'textures/2k_stars_milky_way.jpg',
+    'Pluto': 'textures/2k_pluto.jpg'
+}
 
 def create_Sol_system(universe):
     return [
@@ -21,7 +37,7 @@ def create_Sol_system(universe):
         Mercury(universe),
         Venus(universe),
         Earth(universe),
-        Moon(universe),
+        Moon(universe), # The Moon doesn't behave accordingly with the current position and velocity...
         Mars(universe),
         Ceres(universe),
         Jupiter(universe),

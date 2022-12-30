@@ -51,7 +51,7 @@ class Universe:
 
     def update(self):
         self.iterations += 1
-        self.date += config.SIM_DT
+        self.date += self.dt
         self.str_date = self.date.strftime("%Y/%m/%d")
         for obj in self.objects:
             obj.update_position(self.dt)

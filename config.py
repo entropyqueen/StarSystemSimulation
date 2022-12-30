@@ -52,6 +52,8 @@ DISPLAY_HEIGHT = 800
 ZOOM_FACTOR_STEP = 2
 DEFAULT_ZOOM = 1
 
+DEFAULT_BODY_SIZES = 2
+
 ##########################
 #         Keymap         #
 ##########################
@@ -90,7 +92,7 @@ KEYMAP_ONCE = {
 CAM_SPEED = 10
 CAM_SPEED_STEP = 1.5
 MIN_CAM_SPEED = 0.2
-MAX_CAM_SPEED = 10000
+MAX_CAM_SPEED = 100000000
 
 CAM_ROTATION_SPEED = 50
 CAM_ROTATION_SPEED_STEP = 1.5
