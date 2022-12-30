@@ -74,6 +74,7 @@ class StarSystemObject:
         self.position = np.array(position, dtype=np.double) * u.AU
         self.velocity = np.array(velocity, dtype=np.double) * u.AU / u.d
         self.acc = np.zeros(3, dtype=np.double) * u.AU / (u.d ** 2)
+        self.f = 0
 
         self.radius = radius
         self.color = color
@@ -93,14 +94,15 @@ class StarSystemObject:
             f'f:\t\t\t{np.linalg.norm(self.acc * self.mass).to(u.N):.3e}'
         return s
 
+    # TODO: Use CPP or Cython to accelerate those computation (+ parallelize)
     # COMPUTE ACCELERATION
     def calculate_acceleration(self, other):
         dst = np.linalg.norm(other.position - self.position)  # distance in AU
         unit_v = (other.position - self.position) / dst
-        f = ((c.G * self.mass * other.mass) / (dst ** 2)) * unit_v
+        self.f = ((c.G * self.mass * other.mass) / (dst ** 2)) * unit_v
         if config.DEBUG:
-            print(f'F between {self.name} and {other.name}: {np.linalg.norm(f).to(u.N):.2e}')
-        return (f / self.mass).to(u.AU / u.d ** 2)
+            print(f'F between {self.name} and {other.name}: {np.linalg.norm(self.f).to(u.N):.2e}')
+        return (self.f / self.mass).to(u.AU / u.d ** 2)
 
     # INTEGRATE THE POSITIONS OF BODIES
     def update_position(self, dt):
