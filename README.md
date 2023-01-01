@@ -4,7 +4,7 @@
 
 **This is a Work In Progress**
 
-This project aims at simulating (semi) realistically a star systems, and try out some things like: 
+This project aims at simulating (semi) realistically a star systems in 3D, and try out some things like: 
 removing a planet or a sun, making binary system and watch how they evolve, ...
 
 ![screenshot](./screenshot/screenshot.png)
