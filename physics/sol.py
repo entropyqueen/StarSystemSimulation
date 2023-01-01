@@ -37,7 +37,7 @@ def create_Sol_system(universe):
         Mercury(universe),
         Venus(universe),
         Earth(universe),
-        Moon(universe), # The Moon doesn't behave accordingly with the current position and velocity...
+        Moon(universe),  # The Moon doesn't behave accordingly with the current position and velocity...
         Mars(universe),
         Ceres(universe),
         Jupiter(universe),
@@ -56,7 +56,8 @@ class Sun(StarSystemObject):
         super().__init__(
             universe,
             333030 * u.Mearth, position, velocity,
-            name=self.name, radius=1. * u.Rsun, color=convert_K_to_RGB(5778)
+            name=self.name, radius=1. * u.Rsun, color=convert_K_to_RGB(5778),
+            is_star=True,
         )
 
 
