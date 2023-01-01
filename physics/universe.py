@@ -108,7 +108,7 @@ class StarSystemObject:
 
     # INTEGRATE THE POSITIONS OF BODIES
     def update_position(self, dt):
-        acc = 0
+        acc = np.zeros(3, dtype=np.double) * u.AU / (u.d ** 2)
         for body in self.universe.objects:
             if self == body:
                 continue

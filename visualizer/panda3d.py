@@ -100,6 +100,8 @@ class PandaVisualizer(ShowBase):
                 self.accept(v, self.sim_pause)
             if k == 'MOUSE_SWITCH_MODE':
                 self.accept(v, self.mouse_witch_mode)
+            if k == 'DELETE':
+                self.accept(v, self.delete_selected)
             if k == 'QUIT':
                 self.accept(v, sys.exit)
 
@@ -206,6 +208,8 @@ class PandaVisualizer(ShowBase):
         return task.cont
 
     def select_object_prev(self):
+        if len(self.objects_to_display) == 0:
+            return None
         self.selected_object_iter -= 1
         if self.selected_object_iter < 0:
             self.selected_object_iter = len(self.objects_to_display) - 1
@@ -213,6 +217,8 @@ class PandaVisualizer(ShowBase):
         return self.selected_object
 
     def select_object_next(self):
+        if len(self.objects_to_display) == 0:
+            return None
         self.selected_object_iter += 1
         if self.selected_object_iter >= len(self.objects_to_display):
             self.selected_object_iter = 0
@@ -231,13 +237,16 @@ class PandaVisualizer(ShowBase):
         self.cam.lookAt(obj.obj_node_path)
 
     def focus_camera_on_prev(self):
-        self.cam.lookAt(self.select_object_prev().obj_node_path)
+        if self.selected_object is not None:
+            self.cam.lookAt(self.select_object_prev().obj_node_path)
 
     def focus_camera_on_next(self):
-        self.cam.lookAt(self.select_object_next().obj_node_path)
+        if self.selected_object is not None:
+            self.cam.lookAt(self.select_object_next().obj_node_path)
 
     def focus_selected(self):
-        self.focus_camera_on(self.selected_object)
+        if self.selected_object is not None:
+            self.focus_camera_on(self.selected_object)
 
     def add_info_text(self, key, text):
 
@@ -294,25 +303,32 @@ class PandaVisualizer(ShowBase):
         else:
             self.info('pause', 'Sim State: RUNNING')
 
-        self.info(
-            'focus_cam_l1',
-            f'Selected: [{self.selected_object.obj.name}]:'
-        )
-        self.info(
-            'focus_cam_l2',
-            f'\t R = {self.selected_object.obj.radius.to(u.km):.2e} '
-            f'(display size: {self.selected_object.scale:.2e})'
-        )
-        self.info(
-            'focus_cam_l3', '\t'
-            f'x: {self.selected_object.pos[0]:.2e}, '
-            f'y: {self.selected_object.pos[1]:.2e}, '
-            f'z: {self.selected_object.pos.getZ():.2e}'
-        )
-        self.info(
-            'dst_to_selected',
-            f'Distance to selected: {np.linalg.norm(tuple(self.cam.getPos() - self.selected_object.pos)):.2e}'
-        )
+        try:
+            self.info(
+                'focus_cam_l1',
+                f'Selected: [{self.selected_object.obj.name}]:'
+            )
+            self.info(
+                'focus_cam_l2',
+                f'\tR = {self.selected_object.obj.radius.to(u.km):.2e} '
+                f'(display size: {self.selected_object.scale:.2e})'
+            )
+            self.info(
+                'focus_cam_l3', '\t'
+                f'x: {self.selected_object.pos[0]:.2e}, '
+                f'y: {self.selected_object.pos[1]:.2e}, '
+                f'z: {self.selected_object.pos.getZ():.2e}'
+            )
+            self.info(
+                'dst_to_selected',
+                f'Distance to selected: {np.linalg.norm(tuple(self.cam.getPos() - self.selected_object.pos)):.2e}'
+            )
+        except AttributeError:
+            self.info('focus_cam_l1', 'Selected: [None]:')
+            self.info('focus_cam_l2', '\tR = 0 (display size: 0)')
+            self.info('focus_cam_l3', '\tx: 0, y: 0, z:0')
+            self.info('dst_to_selected', 'Distance to selected: 0')
+
         self.info('zoom', f'zoom lvl: {self.zoom_factor:.2e}')
 
     def sim_pause(self):
@@ -336,3 +352,14 @@ class PandaVisualizer(ShowBase):
         else:
             wp.setMouseMode(WindowProperties.M_relative)
         self.win.requestProperties(wp)
+
+    def delete_selected(self):
+        if self.selected_object is not None:
+            self.universe.objects.remove(self.selected_object.obj)
+            self.selected_object.obj_node_path.removeNode()
+            self.objects_to_display.remove(self.selected_object)
+            self.selected_object_iter -= 1
+            self.select_object_next()
+            if len(self.objects_to_display) == 0:
+                self.selected_object = None
+                self.selected_object_iter = 0

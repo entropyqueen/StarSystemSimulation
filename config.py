@@ -11,11 +11,15 @@ from datetime import datetime
 # Define starting date of the simulation (start today)
 SIM_START_DATE = astrotime.Time(datetime.now().strftime('%Y-%m-%d'))
 
-# Numbers of days to run the simulation for
-MAX_DAYS = 100000
-
 # Steps at which the simulation integrates
 # Use a time unit from astropy.units
+# u.d is a day
+# u.h is an hour
+# u.s is a second
+# Keep in mind that putting high values will break the simulation since we are integrating using
+# this value as the delta of time elapsed between each cycle.
+# So the higher the value, the higher the error for every cycle
+# But smaller value means slower simulation.
 SIM_DT = 1 * units.d
 
 
@@ -102,6 +106,7 @@ KEYMAP_ONCE = {
     'FOCUS_TARGET': 'l',  # focus camera on selected object
     'PAUSE': 'p',  # pause the simulation
     'MOUSE_SWITCH_MODE': 'mouse2',  # Switch between camera and select mode
+    'DELETE': 'delete',  # delete selected object from simulation
     'QUIT': 'escape'  # quit the simulator
 }
 
