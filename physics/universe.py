@@ -88,7 +88,6 @@ class StarSystemObject:
         self.is_star = is_star
         self.temp = temp
 
-
         self.universe.add_object(self)
 
     def __repr__(self):

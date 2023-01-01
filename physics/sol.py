@@ -41,7 +41,7 @@ def create_Sol_system(universe):
         Mercury(universe),
         Venus(universe),
         Earth(universe),
-        Moon(universe),  # The Moon doesn't behave accordingly with the current position and velocity...
+        # Moon(universe),  # The Moon doesn't behave accordingly with the current position and velocity...
         Mars(universe),
         Ceres(universe),
         Jupiter(universe),
