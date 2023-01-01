@@ -24,7 +24,7 @@ There are two interfaces possible, one using `matplotlib`, the other using `pand
 
 ### Panda3d
 
-![video](./videos/panda3d.mp4)
+https://user-images.githubusercontent.com/2721112/210183033-ddf1c996-5aae-417b-9097-2993e893436a.mp4
 
 Keymap:
 
@@ -52,5 +52,3 @@ Keymap:
 
 ### Matplotlib
 WIP: I've broken too many things to make panda3d interface so I have to rewrite it
-
-![video](./videos/matplotlib.mp4)
