@@ -1,8 +1,7 @@
 
-from direct.gui.OnscreenText import TextNode
-
 from astropy import units as u
-from panda3d.core import LPoint3f, TextureStage
+from direct.gui.OnscreenText import TextNode
+from panda3d.core import LPoint3f, PointLight
 import math
 
 from utils import hex_to_rgb_norm
@@ -10,8 +9,9 @@ import config
 
 class ObjectDisplay:
 
-    def __init__(self, star_system_obj, model_path='./models/sphere.glb', texture_path=None, units=u.AU, realist_view=False):
-        # Set zoom
+    def __init__(self, star_system_obj, model_path='./models/sphere.glb',
+                 texture_path=None, units=u.AU, realist_view=False):
+
         self.zoom_factor = config.DEFAULT_ZOOM
 
         self.units = units
@@ -28,13 +28,28 @@ class ObjectDisplay:
         self.obj_node_path = render.attachNewNode(f'{self.designation_name}_trajectory')
         self.obj_model = loader.loadModel(model_path)
         self.obj_model.reparentTo(self.obj_node_path)
-        self.obj_model.setR(-90)
+        self.obj_model.setP(90)
 
         if texture_path is not None:
             self.obj_texture = loader.loadTexture(texture_path)
             self.obj_model.setTexture(self.obj_texture, 1)
         else:
             self.obj_model.setColor(*hex_to_rgb_norm(self.obj.color))
+
+        if self.obj.is_star:
+            self.light = PointLight(f'{self.designation_name}_light')
+            self.light_node_path = self.obj_node_path.attachNewNode(self.light)
+            self.light_node_path.setPos(*self.pos)
+        else:
+            self.light = None
+
+        self.label = TextNode(f'{self.obj.name}')
+        self.label.setText(f'{self.obj.name}')
+        self.label_node_path = render.attachNewNode(self.label)
+        self.label_node_path.setPos(self.obj_node_path, -0.5, -self.scale, self.scale)
+        self.label_node_path.setScale(0.15)
+        self.label_node_path.setBillboardPointEye(-10, fixed_depth=True)
+        self.label_node_path.reparentTo(self.obj_node_path)
 
         # Init position and size
         self.obj_node_path.setScale(self.scale)
@@ -52,9 +67,11 @@ class ObjectDisplay:
         if self.realist_view:
             return LPoint3f(*[self.convert_distances(x) * self.zoom_factor for x in self.obj.position])
         # When not realist view, don't zoom on distances because it's a fucking mess
-        return LPoint3f(*[self.convert_distances(x) for x in self.obj.position])
+        return LPoint3f(*[self.convert_distances(x) / 10 for x in self.obj.position])
 
     def compute_scale(self):
+        if config.STANDARDIZE_BODY_SIZES:
+            return config.STANDARD_BODY_SIZE
         size = self.radius * 2 * self.zoom_factor
         if self.realist_view:
             return size

@@ -20,7 +20,7 @@ class PandaVisualizer(ShowBase):
 
         wp = WindowProperties()
         wp.setMouseMode(WindowProperties.M_relative)
-        wp.setCursorHidden(True)
+        wp.setCursorHidden(False)
         wp.setSize(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT)
         self.win.requestProperties(wp)
 
@@ -47,8 +47,8 @@ class PandaVisualizer(ShowBase):
         self.units = u.Rjup
         # Initialize Universe, and populate with Sol
         self.universe = Universe()
-        self.universe.dt = 1 * u.h
         system = sol.create_Sol_system(self.universe)
+        self.light_emitters = []
         for obj in system:
             texture = None
             try:
@@ -56,18 +56,27 @@ class PandaVisualizer(ShowBase):
             except KeyError:
                 pass
             self.objects_to_display.append(
-                ObjectDisplay(obj, units=self.units, realist_view=realist_view, texture_path=texture)
-            )
+                ObjectDisplay(obj, units=self.units, realist_view=realist_view,
+                              texture_path=texture)
+                )
+        for obj1 in self.objects_to_display:
+            if obj1.obj.is_star:
+                for obj2 in self.objects_to_display:
+                    if obj1 is not obj2:
+                        obj2.obj_model.setLight(obj1.light_node_path)
         self.selected_object = self.objects_to_display[self.selected_object_iter]
 
-        self.focus_selected()
         self.axis = None
         self.init_axis()
 
+        self.recenterMouse()
         # Launch tasks
         self.update_task = self.taskMgr.add(self.update, 'update')
         self.mouse_task = self.taskMgr.add(self.mouse_control, 'mouse_control')
         self.keyboard_task = self.taskMgr.add(self.keyboard_control, 'keyboard_control')
+
+        self.cam.setPos(1e2, 1e2, 1e2)
+        self.cam.lookAt(self.select_object_next().obj_node_path)
 
     def init_controls(self):
         self.disableMouse()
@@ -138,9 +147,17 @@ class PandaVisualizer(ShowBase):
         self.zoom_factor *= config.ZOOM_FACTOR_STEP
 
     def decrease_zoom(self):
-        self.zoom_factor //= config.ZOOM_FACTOR_STEP
-        if self.zoom_factor < 1:
-            self.zoom_factor = 1
+        if self.zoom_factor >= config.ZOOM_FACTOR_STEP**2:
+            self.zoom_factor //= config.ZOOM_FACTOR_STEP
+        else:
+            self.zoom_factor *= (config.ZOOM_FACTOR_STEP / 10)
+
+    def recenterMouse(self):
+        self.win.movePointer(
+            0,
+            int(self.win.getProperties().getXSize() / 2),
+            int(self.win.getProperties().getYSize() / 2)
+        )
 
     def mouse_control(self, task):
         x, y, dx, dy = 0, 0, 0, 0
@@ -211,10 +228,6 @@ class PandaVisualizer(ShowBase):
 
     def focus_selected(self):
         self.focus_camera_on(self.selected_object)
-
-    def foobar(self):
-        axis = self.loader.loadModel('models/zup-axis')
-        axis.reparentTo(self.render)
 
     def add_info_text(self, key, text):
 

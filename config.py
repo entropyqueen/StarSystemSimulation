@@ -52,7 +52,19 @@ DISPLAY_HEIGHT = 800
 ZOOM_FACTOR_STEP = 2
 DEFAULT_ZOOM = 1
 
+# Realist or non realist view
+# Setting to true will keep proper ratio between radius and distances
+# realist view can be hard to grasp due to the immensity of space
+REALIST_VIEW = True
+
+# This option will set all radius to STANDADRD_BODY_SIZE for each body, regardless of the realism choice
+# This works best with REALIST_VIEW = True, because the distances will be respected, and objects visible
+STANDARDIZE_BODY_SIZES = True
+STANDARD_BODY_SIZE = 1.5
+
+# Option for non-realist view, this is use to give a base size for objects
 DEFAULT_BODY_SIZES = 2
+
 
 ##########################
 #         Keymap         #

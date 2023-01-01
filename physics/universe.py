@@ -67,6 +67,7 @@ class StarSystemObject:
             color='black',
             name='object',
             radius=10,
+            is_star=False,
     ):
         # Setting physical properties
         self.universe = universe
@@ -74,6 +75,7 @@ class StarSystemObject:
         self.position = np.array(position, dtype=np.double) * u.AU
         self.velocity = np.array(velocity, dtype=np.double) * u.AU / u.d
         self.acc = np.zeros(3, dtype=np.double) * u.AU / (u.d ** 2)
+        self.is_star = is_star
         self.f = 0
 
         self.radius = radius
