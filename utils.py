@@ -1,5 +1,24 @@
 import math
 
+def hex_to_rgb(h):
+    """
+    Convert hex color values to RGB
+    :param h: #RRGGBB
+    :return: (r, g, b)
+    """
+    if isinstance(h, str):
+        return tuple(int(h.lstrip('#')[i:i+2], 16) for i in (0, 2, 4))
+    return h
+
+def hex_to_rgb_norm(h):
+    """
+    convert hex color values to RGB, but normalizes it to fit in the range [0, 1]
+    :param h: #RRGGBB
+    :return: (r, g, b)
+    """
+    if isinstance(h, str):
+        return tuple(int(h.lstrip('#')[i:i+2], 16) / 255 for i in (0, 2, 4))
+    return h
 
 def convert_K_to_RGB(colour_temperature):
     """
@@ -58,6 +77,4 @@ def convert_K_to_RGB(colour_temperature):
         else:
             blue = tmp_blue
 
-    return list(map(lambda div: div/255.0, (red, green, blue))) + [1]
-
-
+    return tuple(map(lambda div: div/255.0, (red, green, blue)))
