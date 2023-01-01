@@ -46,11 +46,14 @@ FIG_SIZE = 20
 # PANDA SPECIFICS
 # those are unused when using matplotlib display
 # Display size in pixels
-DISPLAY_WIDTH = 1200
-DISPLAY_HEIGHT = 800
+DISPLAY_WIDTH = 1800
+DISPLAY_HEIGHT = 1100
 
 ZOOM_FACTOR_STEP = 2
 DEFAULT_ZOOM = 1
+
+HIDE_LABEL = False
+LABEL_SIZE = 0.15
 
 # Realist or non realist view
 # Setting to true will keep proper ratio between radius and distances
@@ -76,33 +79,34 @@ DEFAULT_BODY_SIZES = 2
 
 # Those are the keys that can stay pressed
 KEYMAP_REP = {
-    'UP': 'r',
-    'DOWN': 'f',
-    'FWD': 'w',
-    'LEFT': 'a',
-    'BACKWD': 's',
-    'RIGHT': 'd',
-    'YAW': 'mouse_x',
-    'PITCH': 'mouse_y',
-    'ROLL_R': 'e',
-    'ROLL_L': 'q',
-    'MVT_SPEED+': '=',
-    'MVT_SPEED-': '-',
+    'UP': 'r',  # move camera upward
+    'DOWN': 'f',  # move camera downward
+    'FWD': 'w',  # move camera forward
+    'LEFT': 'a',  # move camera left
+    'BACKWD': 's',  # move camera backward
+    'RIGHT': 'd',  # move camera right
+    'YAW': 'mouse_x',  # rotate camera on Yaw axis
+    'PITCH': 'mouse_y', # rotate camera on pitch axis
+    'ROLL_R': 'e',  # rotate camera right on roll axis
+    'ROLL_L': 'q',  # rotate camera left on roll axis
+    'MVT_SPEED+': '=',  # increase camera movement speed
+    'MVT_SPEED-': '-',  # decrease camera movement speed
 }
 
 # Those are the keys whose effect is not repeated
 KEYMAP_ONCE = {
-    'ZOOM_IN': 'wheel_up',
-    'ZOOM_OUT': 'wheel_down',
-    'TARGET_PREV': 'arrow_left',
-    'TARGET_NEXT': 'arrow_right',
-    'FOCUS_TARGET': 'l',
-    'PAUSE': 'p',
-    'QUIT': 'escape'
+    'ZOOM_IN': 'wheel_up',  # Zoom in the simulation
+    'ZOOM_OUT': 'wheel_down',  # Zoom out of the simultaion
+    'TARGET_PREV': 'arrow_left',  # select previous object, automatically rotate camera to look in object's direction
+    'TARGET_NEXT': 'arrow_right',  # select next object, automatically rotate camera to look in object's direction
+    'FOCUS_TARGET': 'l',  # focus camera on selected object
+    'PAUSE': 'p',  # pause the simulation
+    'MOUSE_SWITCH_MODE': 'mouse2',  # Switch between camera and select mode
+    'QUIT': 'escape'  # quit the simulator
 }
 
 CAM_SPEED = 10
-CAM_SPEED_STEP = 1.5
+CAM_SPEED_STEP = 2
 MIN_CAM_SPEED = 0.2
 MAX_CAM_SPEED = 100000000
 
