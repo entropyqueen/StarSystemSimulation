@@ -1,7 +1,7 @@
 
 from astropy import units as u
 from direct.gui.OnscreenText import TextNode
-from panda3d.core import LPoint3f, PointLight
+from panda3d.core import LPoint3f, PointLight, AmbientLight, TextureStage
 import math
 
 from utils import hex_to_rgb_norm
@@ -10,7 +10,7 @@ import config
 class ObjectDisplay:
 
     def __init__(self, star_system_obj, model_path='./models/sphere.glb',
-                 texture_path=None, units=u.AU, realist_view=False):
+                 textures=None, units=u.AU, realist_view=False):
 
         self.zoom_factor = config.DEFAULT_ZOOM
 
@@ -30,19 +30,6 @@ class ObjectDisplay:
         self.obj_model.reparentTo(self.obj_node_path)
         self.obj_model.setP(90)
 
-        if texture_path is not None:
-            self.obj_texture = loader.loadTexture(texture_path)
-            self.obj_model.setTexture(self.obj_texture, 1)
-        else:
-            self.obj_model.setColor(*hex_to_rgb_norm(self.obj.color))
-
-        if self.obj.is_star:
-            self.light = PointLight(f'{self.designation_name}_light')
-            self.light_node_path = self.obj_node_path.attachNewNode(self.light)
-            self.light_node_path.setPos(*self.pos)
-        else:
-            self.light = None
-
         if not config.HIDE_LABEL:
             self.label = TextNode(f'{self.obj.name}')
             self.label.setText(f'{self.obj.name}')
@@ -51,6 +38,41 @@ class ObjectDisplay:
             self.label_node_path.setScale(config.LABEL_SIZE)
             self.label_node_path.setBillboardPointEye(-10, fixed_depth=True)
             self.label_node_path.reparentTo(self.obj_node_path)
+
+        ts = TextureStage('ts')
+        if textures is not None:
+            if 'color' in textures:
+                color_map = loader.loadTexture(textures['color'])
+                ts.setMode(TextureStage.MModulate)
+                self.obj_model.setTexture(ts, color_map)
+        else:
+            self.obj_model.setColor(*hex_to_rgb_norm(self.obj.color))
+
+        glow_map = loader.loadTexture('textures/black.jpg')  # a tiny black image
+        ts = TextureStage('ts')
+        ts.setMode(TextureStage.MGlow)
+
+        if self.obj.is_star:
+            self.light = PointLight(f'{self.designation_name}_light')
+            self.light.setColorTemperature(self.obj.temp)
+            self.light_node_path = self.obj_node_path.attachNewNode(self.light)
+            self.light_node_path.setPos(*self.pos)
+
+            alight = AmbientLight('alight')
+            alnp = self.obj_node_path.attachNewNode(alight)
+            self.obj_model.setLight(alnp)
+
+            glow_map = loader.loadTexture('textures/white.jpg')  # a tiny black image
+            ts = TextureStage('ts')
+            ts.setMode(TextureStage.MGlow)
+            self.obj_model.setTexture(ts, glow_map)
+        else:
+            self.light = None
+            self.obj_model.setTexture(ts, glow_map)
+
+        self.label_node_path.setTexture(ts, glow_map)
+
+        self.obj_node_path.setShaderAuto()
 
         # Init position and size
         self.obj_node_path.setScale(self.scale)

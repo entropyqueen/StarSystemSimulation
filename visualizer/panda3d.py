@@ -2,6 +2,7 @@ import sys
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import WindowProperties, Vec3, LPoint3f
 from direct.gui.OnscreenText import OnscreenText, TextNode
+from direct.filter.CommonFilters import CommonFilters
 from astropy import units as u
 import numpy as np
 
@@ -48,6 +49,8 @@ class PandaVisualizer(ShowBase):
         self.units = u.Rjup
         # Initialize Universe, and populate with Sol
         self.universe = Universe()
+
+        # TODO: create a load_system method
         system = sol.create_Sol_system(self.universe)
         self.light_emitters = []
         for obj in system:
@@ -58,7 +61,7 @@ class PandaVisualizer(ShowBase):
                 pass
             self.objects_to_display.append(
                 ObjectDisplay(obj, units=self.units, realist_view=realist_view,
-                              texture_path=texture)
+                              textures=texture)
                 )
         for obj1 in self.objects_to_display:
             if obj1.obj.is_star:
@@ -69,6 +72,10 @@ class PandaVisualizer(ShowBase):
 
         self.axis = None
         self.init_axis()
+
+        self.filters = CommonFilters(self.win, self.cam)
+        self.filters.setBloom(blend=(0, 0, 0, 1), desat=-0.5, mintrigger=0.8, maxtrigger=1, intensity=1.0,
+                              size=1000)
 
         self.recenterMouse()
         # Launch tasks
@@ -232,8 +239,11 @@ class PandaVisualizer(ShowBase):
         dx = x + 10*obj.scale
         dy = y + 10*obj.scale
         dz = z + 10*obj.scale
-
-        self.cam.setPos(dx, dy, dz)
+        #dst = np.linalg.norm(obj.obj.position - self.cam.getPos())  # distance in AU
+        #unit_v = (obj.obj.position - self.obj.position) / dst
+        #new_pos = LPoint3f(np.array(dx, dy, dz) * unit_v)
+        new_pos = LPoint3f(dx, dy, dz)
+        self.cam.setPos(new_pos)
         self.cam.lookAt(obj.obj_node_path)
 
     def focus_camera_on_prev(self):
@@ -350,6 +360,13 @@ class PandaVisualizer(ShowBase):
         if self.win.getProperties().get_mouse_mode() == WindowProperties.M_relative:
             wp.setMouseMode(WindowProperties.M_absolute)
         else:
+            self.win.movePointer(
+                0,
+                int(self.win.getProperties().getXSize() / 2),
+                int(self.win.getProperties().getYSize() / 2)
+            )
+            self.last_mouse_x = self.win.getProperties().getXSize() / 2
+            self.last_mouse_y = self.win.getProperties().getYSize() / 2
             wp.setMouseMode(WindowProperties.M_relative)
         self.win.requestProperties(wp)
 
