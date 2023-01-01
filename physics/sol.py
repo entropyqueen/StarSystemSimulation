@@ -3,7 +3,6 @@ from astroquery.jplhorizons import Horizons
 from astropy import units as u
 
 from physics.universe import StarSystemObject
-from utils import convert_K_to_RGB
 from config import SIM_START_DATE
 
 """
@@ -13,27 +12,32 @@ Units:
  Speeds in AU / d
  Masses in Earth's mass
 """
-
 texture_map = {
-    'Neptune': 'textures/2k_neptune.jpg',
-    'Ceres': 'textures/2k_ceres_fictional.jpg',
-    'Earth': 'textures/2k_earth_daymap.jpg',
-    'Mars': 'textures/2k_mars.jpg',
-    'Moon': 'textures/2k_moon.jpg',
-    'Saturn_rings': 'textures/2k_saturn_ring_alpha.png',
-    'Sun': 'textures/2k_sun.jpg',
-    'Uranus': 'textures/2k_uranus.jpg',
-    'Venus': 'textures/2k_venus_atmosphere.jpg',
-    'Jupiter': 'textures/2k_jupiter.jpg',
-    'Mercury': 'textures/2k_mercury.jpg',
-    'Saturn': 'textures/2k_saturn.jpg',
-    'MilkyWay': 'textures/2k_stars_milky_way.jpg',
-    'Pluto': 'textures/2k_pluto.jpg'
+    'Neptune': {'color': 'textures/2k_neptune.jpg'},
+    'Ceres': {'color': 'textures/2k_ceres_fictional.jpg'},
+    'Earth': {
+        'color': 'textures/2k_earth_daymap.jpg',
+        'specular': 'textures/2k_earth_specular_map.tif',
+        'normal': 'textures/2k_earth_normal_map.tif',
+    },
+    'Mars': {'color': 'textures/2k_mars.jpg'},
+    'Moon': {'color': 'textures/2k_moon.jpg'},
+    'Saturn_rings': {'color': 'textures/2k_saturn_ring_alpha.png'},
+    'Sun': {'color': 'textures/2k_sun.jpg'},
+    'Uranus': {'color': 'textures/2k_uranus.jpg'},
+    'Venus': {'color': 'textures/2k_venus_atmosphere.jpg'},
+    'Jupiter': {'color': 'textures/2k_jupiter.jpg'},
+    'Mercury': {'color': 'textures/2k_mercury.jpg'},
+    'Saturn': {'color': 'textures/2k_saturn.jpg'},
+    'MilkyWay': {'color': 'textures/2k_stars_milky_way.jpg'},
+    'Pluto': {'color': 'textures/2k_pluto.jpg'},
 }
+
 
 def create_Sol_system(universe):
     return [
         Sun(universe),
+        # Sun2(universe),
         Mercury(universe),
         Venus(universe),
         Earth(universe),
@@ -53,11 +57,29 @@ class Sun(StarSystemObject):
         b = Horizons(id='Sun', location="@sun", epochs=SIM_START_DATE.jd).vectors()
         position = np.array([np.double(b[xi]) for xi in ['x', 'y', 'z']], dtype=np.double)
         velocity = np.array([np.double(b[vxi]) for vxi in ['vx', 'vy', 'vz']], dtype=np.double)
+        temp = 5778
         super().__init__(
             universe,
             333030 * u.Mearth, position, velocity,
-            name=self.name, radius=1. * u.Rsun, color=convert_K_to_RGB(5778),
-            is_star=True,
+            name=self.name, radius=1. * u.Rsun,
+            is_star=True, temp=5778
+        )
+
+
+class Sun2(StarSystemObject):
+    """
+    TEST PURPOSES :D
+    """
+    def __init__(self, universe, display_class=None):
+        self.name = 'Sun2'
+        b = Horizons(id='2', location="@sun", epochs=SIM_START_DATE.jd).vectors()
+        position = np.array((1, 1, 1), dtype=np.double)
+        velocity = np.array([np.double(b[vxi]) for vxi in ['vx', 'vy', 'vz']], dtype=np.double)
+        super().__init__(
+            universe,
+            333030 * u.Mearth, position, velocity,
+            name=self.name, radius=1. * u.Rsun,
+            is_star=True, temp=6800
         )
 
 

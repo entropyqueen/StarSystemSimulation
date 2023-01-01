@@ -3,6 +3,7 @@ from astropy import units as u
 from astropy import constants as c
 
 import config
+from utils import convert_K_to_RGB
 
 
 class Universe:
@@ -68,6 +69,7 @@ class StarSystemObject:
             name='object',
             radius=10,
             is_star=False,
+            temp=5000,
     ):
         # Setting physical properties
         self.universe = universe
@@ -75,12 +77,17 @@ class StarSystemObject:
         self.position = np.array(position, dtype=np.double) * u.AU
         self.velocity = np.array(velocity, dtype=np.double) * u.AU / u.d
         self.acc = np.zeros(3, dtype=np.double) * u.AU / (u.d ** 2)
-        self.is_star = is_star
+
         self.f = 0
 
         self.radius = radius
         self.color = color
+        if is_star:
+            self.color = convert_K_to_RGB(temp)
         self.name = name
+        self.is_star = is_star
+        self.temp = temp
+
 
         self.universe.add_object(self)
 
