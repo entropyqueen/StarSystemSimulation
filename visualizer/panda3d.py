@@ -19,7 +19,8 @@ class PandaVisualizer(ShowBase):
         # Window properties
 
         wp = WindowProperties()
-        wp.setMouseMode(WindowProperties.M_relative)
+        wp.setTitle('Star System Simulator')
+        wp.setMouseMode(WindowProperties.M_absolute)
         wp.setCursorHidden(False)
         wp.setSize(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT)
         self.win.requestProperties(wp)
@@ -97,6 +98,8 @@ class PandaVisualizer(ShowBase):
                 self.accept(v, self.focus_selected)
             if k == 'PAUSE':
                 self.accept(v, self.sim_pause)
+            if k == 'MOUSE_SWITCH_MODE':
+                self.accept(v, self.mouse_witch_mode)
             if k == 'QUIT':
                 self.accept(v, sys.exit)
 
@@ -160,6 +163,8 @@ class PandaVisualizer(ShowBase):
         )
 
     def mouse_control(self, task):
+        if self.win.getProperties().get_mouse_mode() == WindowProperties.M_absolute:
+            return task.cont
         x, y, dx, dy = 0, 0, 0, 0
         mw = self.mouseWatcherNode
         has_mouse = mw.hasMouse()
@@ -167,6 +172,11 @@ class PandaVisualizer(ShowBase):
             x, y = mw.getMouseX(), mw.getMouseY()
             dx = (self.last_mouse_x - x) * 10 * config.MOUSE_SENSITIVITY
             dy = (y - self.last_mouse_y) * 10 * config.MOUSE_SENSITIVITY
+
+        if config.MOUSE_INVERT_X:
+            dx = -dx
+        if config.MOUSE_INVERT_Y:
+            dy = -dy
 
         self.last_mouse_x, self.last_mouse_y = x, y
         self.cam.setH(self.cam, dx)
@@ -318,3 +328,11 @@ class PandaVisualizer(ShowBase):
         self.axis.setScale(0.05)
         self.axis.setPos(self.a2dTopRight, -0.2, 0, -0.2)
         self.axis.reparentTo(self.render2d)
+
+    def mouse_witch_mode(self):
+        wp = WindowProperties()
+        if self.win.getProperties().get_mouse_mode() == WindowProperties.M_relative:
+            wp.setMouseMode(WindowProperties.M_absolute)
+        else:
+            wp.setMouseMode(WindowProperties.M_relative)
+        self.win.requestProperties(wp)

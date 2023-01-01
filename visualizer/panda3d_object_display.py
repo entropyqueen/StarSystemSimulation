@@ -43,13 +43,14 @@ class ObjectDisplay:
         else:
             self.light = None
 
-        self.label = TextNode(f'{self.obj.name}')
-        self.label.setText(f'{self.obj.name}')
-        self.label_node_path = render.attachNewNode(self.label)
-        self.label_node_path.setPos(self.obj_node_path, -0.5, -self.scale, self.scale)
-        self.label_node_path.setScale(0.15)
-        self.label_node_path.setBillboardPointEye(-10, fixed_depth=True)
-        self.label_node_path.reparentTo(self.obj_node_path)
+        if not config.HIDE_LABEL:
+            self.label = TextNode(f'{self.obj.name}')
+            self.label.setText(f'{self.obj.name}')
+            self.label_node_path = render.attachNewNode(self.label)
+            self.label_node_path.setPos(self.obj_node_path, -0.5, -self.scale, self.scale)
+            self.label_node_path.setScale(config.LABEL_SIZE)
+            self.label_node_path.setBillboardPointEye(-10, fixed_depth=True)
+            self.label_node_path.reparentTo(self.obj_node_path)
 
         # Init position and size
         self.obj_node_path.setScale(self.scale)
