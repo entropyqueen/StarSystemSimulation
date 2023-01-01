@@ -51,4 +51,8 @@ Keymap:
 - quit the simulator: `escape`
 
 ### Matplotlib
+
 WIP: I've broken too many things to make panda3d interface so I have to rewrite it
+
+https://user-images.githubusercontent.com/2721112/210183047-ba376825-266e-4abc-a464-29387ae990bf.mp4
+
