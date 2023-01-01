@@ -22,6 +22,10 @@ We then compute the position of each object through n-body simulation.
 
 There are two interfaces possible, one using `matplotlib`, the other using `panda3d`
 
+### Configuration:
+
+take a look at https://github.com/entropyqueen/StarSystemSimulation/blob/main/config.py 
+
 ### Panda3d
 
 https://user-images.githubusercontent.com/2721112/210183033-ddf1c996-5aae-417b-9097-2993e893436a.mp4
