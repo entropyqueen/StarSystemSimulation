@@ -1,6 +1,6 @@
 import sys
 from direct.showbase.ShowBase import ShowBase
-from panda3d.core import WindowProperties, Vec3, LPoint3f
+from panda3d.core import WindowProperties, Vec3, LPoint3f, TextureStage, TexGenAttrib
 from direct.gui.OnscreenText import OnscreenText, TextNode
 from direct.filter.CommonFilters import CommonFilters
 from astropy import units as u
@@ -27,13 +27,15 @@ class PandaVisualizer(ShowBase):
         self.win.requestProperties(wp)
 
         self.zoom_factor = config.DEFAULT_ZOOM
-        self.init_default_display()
 
         # Initialize display settings
         self.info_text = {}
         self.info_text_ids = {}
         self.objects_to_display = []
         self.selected_object_iter = 0
+        self.sky_box = None
+        self.skybox_scale = 10000
+        self.init_default_display()
 
         # Controls initialization
         self.keymap_rep = {}
@@ -55,12 +57,13 @@ class PandaVisualizer(ShowBase):
         self.light_emitters = []
         for obj in system:
             texture = None
-            try:
+            model = './models/sphere.glb'
+            if obj.name in sol.texture_map:
                 texture = sol.texture_map[obj.name]
-            except KeyError:
-                pass
+            if obj.name in sol.model_map:
+                model = sol.model_map[obj.name]
             self.objects_to_display.append(
-                ObjectDisplay(obj, units=self.units, realist_view=realist_view,
+                ObjectDisplay(obj, units=self.units, realist_view=realist_view, model_path=model,
                               textures=texture)
                 )
         for obj1 in self.objects_to_display:
@@ -74,16 +77,15 @@ class PandaVisualizer(ShowBase):
         self.init_axis()
 
         self.filters = CommonFilters(self.win, self.cam)
-        self.filters.setBloom(blend=(0, 0, 0, 1), desat=-0.5, mintrigger=0.8, maxtrigger=1, intensity=1.0,
-                              size=1000)
+        self.filters.setBloom(blend=(0, 0, 0, 1), desat=-0.5, mintrigger=0.8, maxtrigger=1, intensity=1.0, size=1000)
 
-        self.recenterMouse()
+        self.recenter_mouse()
         # Launch tasks
+        self.recenter_skybox_task = self.taskMgr.add(self.recenter_skybox, 'recenter_skybox')
         self.update_task = self.taskMgr.add(self.update, 'update')
         self.mouse_task = self.taskMgr.add(self.mouse_control, 'mouse_control')
         self.keyboard_task = self.taskMgr.add(self.keyboard_control, 'keyboard_control')
 
-        self.cam.setPos(1e2, 1e2, 1e2)
         self.cam.lookAt(self.select_object_next().obj_node_path)
 
     def init_controls(self):
@@ -117,6 +119,15 @@ class PandaVisualizer(ShowBase):
 
     def init_default_display(self):
         self.setBackgroundColor(*hex_to_rgb_norm('#000000'))
+        cube_map = loader.loadCubeMap('./textures/skybox/blue_#.png')
+        self.sky_box = loader.loadModel('./models/inverted_box.glb')
+        self.sky_box.setPos(self.cam, 0, 0, 0)
+        self.sky_box.setScale(self.skybox_scale)
+        self.sky_box.setBin('background', 0)
+        self.sky_box.setDepthWrite(0)
+        self.sky_box.setTexGen(TextureStage.getDefault(), TexGenAttrib.MWorldCubeMap)
+        self.sky_box.setTexture(cube_map, 1)
+        self.sky_box.reparentTo(render)
 
     def keyboard_control(self, task):
         dt = globalClock.getDt()
@@ -164,7 +175,7 @@ class PandaVisualizer(ShowBase):
         else:
             self.zoom_factor *= (config.ZOOM_FACTOR_STEP / 10)
 
-    def recenterMouse(self):
+    def recenter_mouse(self):
         self.win.movePointer(
             0,
             int(self.win.getProperties().getXSize() / 2),
@@ -257,6 +268,10 @@ class PandaVisualizer(ShowBase):
     def focus_selected(self):
         if self.selected_object is not None:
             self.focus_camera_on(self.selected_object)
+
+    def recenter_skybox(self, task):
+        self.sky_box.setPos(self.cam, 0, 0, 0)
+        return task.cont
 
     def add_info_text(self, key, text):
 
