@@ -12,6 +12,11 @@ Units:
  Speeds in AU / d
  Masses in Earth's mass
 """
+
+model_map = {
+    'Saturn': 'models/saturn.glb',
+}
+
 texture_map = {
     'Neptune': {'color': 'textures/2k_neptune.jpg'},
     'Ceres': {'color': 'textures/2k_ceres_fictional.jpg'},
@@ -22,13 +27,11 @@ texture_map = {
     },
     'Mars': {'color': 'textures/2k_mars.jpg'},
     'Moon': {'color': 'textures/2k_moon.jpg'},
-    'Saturn_rings': {'color': 'textures/2k_saturn_ring_alpha.png'},
     'Sun': {'color': 'textures/2k_sun.jpg'},
     'Uranus': {'color': 'textures/2k_uranus.jpg'},
     'Venus': {'color': 'textures/2k_venus_atmosphere.jpg'},
     'Jupiter': {'color': 'textures/2k_jupiter.jpg'},
     'Mercury': {'color': 'textures/2k_mercury.jpg'},
-    'Saturn': {'color': 'textures/2k_saturn.jpg'},
     'MilkyWay': {'color': 'textures/2k_stars_milky_way.jpg'},
     'Pluto': {'color': 'textures/2k_pluto.jpg'},
 }
