@@ -108,7 +108,7 @@ class PandaVisualizer(ShowBase):
             if k == 'PAUSE':
                 self.accept(v, self.sim_pause)
             if k == 'MOUSE_SWITCH_MODE':
-                self.accept(v, self.mouse_witch_mode)
+                self.accept(v, self.mouse_switch_mode)
             if k == 'DELETE':
                 self.accept(v, self.delete_selected)
             if k == 'QUIT':
@@ -168,12 +168,16 @@ class PandaVisualizer(ShowBase):
 
     def increase_zoom(self):
         self.zoom_factor *= config.ZOOM_FACTOR_STEP
+        for o in self.objects_to_display:
+            o.delete_history()
 
     def decrease_zoom(self):
         if self.zoom_factor >= config.ZOOM_FACTOR_STEP**2:
             self.zoom_factor //= config.ZOOM_FACTOR_STEP
         else:
             self.zoom_factor *= (config.ZOOM_FACTOR_STEP / 10)
+        for o in self.objects_to_display:
+            o.delete_history()
 
     def recenter_mouse(self):
         self.win.movePointer(
@@ -370,10 +374,11 @@ class PandaVisualizer(ShowBase):
         self.axis.setPos(self.a2dTopRight, -0.2, 0, -0.2)
         self.axis.reparentTo(self.render2d)
 
-    def mouse_witch_mode(self):
+    def mouse_switch_mode(self):
         wp = WindowProperties()
         if self.win.getProperties().get_mouse_mode() == WindowProperties.M_relative:
             wp.setMouseMode(WindowProperties.M_absolute)
+            wp.setCursorHidden(False)
         else:
             self.win.movePointer(
                 0,
@@ -383,6 +388,7 @@ class PandaVisualizer(ShowBase):
             self.last_mouse_x = self.win.getProperties().getXSize() / 2
             self.last_mouse_y = self.win.getProperties().getYSize() / 2
             wp.setMouseMode(WindowProperties.M_relative)
+            wp.setCursorHidden(True)
         self.win.requestProperties(wp)
 
     def delete_selected(self):

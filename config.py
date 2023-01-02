@@ -72,6 +72,13 @@ STANDARD_BODY_SIZE = 0.5
 # Option for non-realist view, this is use to give a base size for objects
 DEFAULT_BODY_SIZES = 2
 
+# History feature allows to print orbits of objects
+HISTORY_ON = True
+# History size defines the length of the position history of each object
+HISTORY_SIZE = 100
+# Skip to one point saved every HISTORY_STEP
+HISTORY_STEP = 2
+
 
 ##########################
 #         Keymap         #

@@ -1,7 +1,8 @@
+import collections
 
 from astropy import units as u
 from direct.gui.OnscreenText import TextNode
-from panda3d.core import LPoint3f, PointLight, AmbientLight, TextureStage
+from panda3d.core import LPoint3f, PointLight, AmbientLight, TextureStage, LineSegs, NodePath, LVecBase4f
 import math
 
 from utils import hex_to_rgb_norm
@@ -20,6 +21,10 @@ class ObjectDisplay:
         self.obj = star_system_obj
         self.radius = self.convert_distances(self.obj.radius)
         self.scale = self.compute_scale()
+        self.history_size = config.HISTORY_SIZE
+        self.history_points = collections.deque([], self.history_size)
+        self.history_steps_ctr = 0
+        self.history = []
 
         self.designation_name = self.obj.name.lower().replace(" ", "_")
 
@@ -100,10 +105,43 @@ class ObjectDisplay:
             return size
         return config.DEFAULT_BODY_SIZES + math.log10(size)
 
+    def delete_history_lines(self):
+        # destroy previous points
+        for x in self.history:
+            x.removeNode()
+
+    def delete_history(self):
+        self.delete_history_lines()
+        self.history_points.clear()
+
+    def handle_history(self):
+        self.history_steps_ctr += 1
+        if self.history_steps_ctr == config.HISTORY_STEP:
+            self.history_steps_ctr = 0
+
+            self.history_points.appendleft(self.pos)
+            self.delete_history_lines()
+
+            if len(self.history_points) >= 2:
+                for i, p in enumerate(self.history_points):
+                    if i + 1 == len(self.history_points):
+                        continue
+                    lines = LineSegs()
+                    lines.moveTo(p)
+                    lines.drawTo(self.history_points[i + 1])
+                    lines.setColor(*hex_to_rgb_norm(self.obj.color), 1)
+                    lines.setThickness(0)
+                    node = lines.create()
+                    np = NodePath(node)
+                    np.reparentTo(render)
+                    self.history.append(np)
+
     def update(self):
         self.pos = self.compute_display_pos()
         self.radius = self.convert_distances(self.obj.radius)
         self.scale = self.compute_scale()
 
+        if config.HISTORY_ON:
+            self.handle_history()
         self.obj_model.setScale(self.scale)
         self.obj_node_path.setPos(*self.pos)
