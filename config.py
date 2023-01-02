@@ -67,7 +67,7 @@ REALIST_VIEW = True
 # This option will set all radius to STANDADRD_BODY_SIZE for each body, regardless of the realism choice
 # This works best with REALIST_VIEW = True, because the distances will be respected, and objects visible
 STANDARDIZE_BODY_SIZES = True
-STANDARD_BODY_SIZE = 1.5
+STANDARD_BODY_SIZE = 0.5
 
 # Option for non-realist view, this is use to give a base size for objects
 DEFAULT_BODY_SIZES = 2
@@ -111,7 +111,7 @@ KEYMAP_ONCE = {
 }
 
 CAM_SPEED = 10
-CAM_SPEED_STEP = 2
+CAM_SPEED_STEP = 10
 MIN_CAM_SPEED = 0.2
 MAX_CAM_SPEED = 100000000
 
