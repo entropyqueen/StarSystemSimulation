@@ -42,8 +42,8 @@ Keymap:
 - rotate camera on pitch axis: `mouse_y`
 - rotate camera right on roll axis: `e`
 - rotate camera left on roll axis: `q`
-- increase camera movement spee: ````
-- decrease camera movement spee: ````
+- increase camera movement speed: `=`
+- decrease camera movement speed: `-`
 - Zoom in the simulation: `wheel_up`
 - Zoom out of the simultaion: `wheel_down`
 - select previous object, automatically rotate camera to look in object's direction: `arrow_left`
