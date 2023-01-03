@@ -30,8 +30,6 @@ class Panda3dDisplay(ShowBase):
         # Initialize display settings
         SkyBox(self)
         self.hud = Hud(self)
-        self.filters = CommonFilters(self.win, self.cam)
-        self.filters.setBloom(blend=(0, 0, 0, 1), desat=-0.5, mintrigger=0.8, maxtrigger=1, intensity=1.0, size=1000)
         self.zoom_factor = config.DEFAULT_ZOOM
 
         # Controls initialization

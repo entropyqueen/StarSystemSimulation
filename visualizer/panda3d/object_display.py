@@ -44,18 +44,12 @@ class ObjectDisplay:
             self.label_node_path.setBillboardPointEye(-10, fixed_depth=True)
             self.label_node_path.reparentTo(self.obj_node_path)
 
-        ts = TextureStage('ts')
         if textures is not None:
             if 'color' in textures:
                 color_map = loader.loadTexture(textures['color'])
-                ts.setMode(TextureStage.MModulate)
-                self.obj_model.setTexture(ts, color_map)
+                self.obj_model.setTexture(color_map, 1)
         else:
             self.obj_model.setColor(*hex_to_rgb_norm(self.obj.color))
-
-        glow_map = loader.loadTexture('textures/black.jpg')  # a tiny black image
-        ts = TextureStage('ts')
-        ts.setMode(TextureStage.MGlow)
 
         if self.obj.is_star:
             self.light = PointLight(f'{self.designation_name}_light')
@@ -64,6 +58,7 @@ class ObjectDisplay:
             self.light_node_path.setPos(*self.pos)
 
             alight = AmbientLight('alight')
+            alight.setColor((1, 1, 1, 1))
             alnp = self.obj_node_path.attachNewNode(alight)
             self.obj_model.setLight(alnp)
 
@@ -73,9 +68,6 @@ class ObjectDisplay:
             self.obj_model.setTexture(ts, glow_map)
         else:
             self.light = None
-            self.obj_model.setTexture(ts, glow_map)
-
-        self.label_node_path.setTexture(ts, glow_map)
 
         self.obj_node_path.setShaderAuto()
 
