@@ -46,6 +46,7 @@ CSV_OUTPUT = './logs.csv'
 # Time between each frame
 FRAME_RATE = 0.0001
 FIG_SIZE = 20
+SIM_SIZE = 10
 
 # PANDA SPECIFICS
 # those are unused when using matplotlib display

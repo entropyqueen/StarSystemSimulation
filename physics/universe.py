@@ -96,7 +96,8 @@ class StarSystemObject:
 
     def __str__(self):
         s = f'{self.name}: (mass: {self.mass})\n' \
-            f'position:\t{np.linalg.norm(self.position):.3e}\n' \
+            f'coords:\t{self.position:}\n' \
+            f'distance:\t{np.linalg.norm(self.position):.3e}\n' \
             f'velocity:\t{np.linalg.norm(self.velocity):.3e}\n' \
             f'accel:\t\t{np.linalg.norm(self.acc):.3e}\n' \
             f'f:\t\t\t{np.linalg.norm(self.acc * self.mass).to(u.N):.3e}'

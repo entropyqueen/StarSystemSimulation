@@ -5,17 +5,18 @@ from astropy import units as u
 import numpy as np
 
 import config
+from loader.loader import StarSystemLoader
 from utils import hex_to_rgb_norm
 from physics.universe import Universe
-from physics import sol
+from loader import sol
 from visualizer.panda3d.inputs import Inputs
 from visualizer.panda3d.hud import Hud
 from visualizer.panda3d.object_display import ObjectDisplay
 from visualizer.panda3d.skybox import SkyBox
 
 
-class Visualizer(ShowBase):
-    def __init__(self, realist_view=False):
+class Panda3dDisplay(ShowBase):
+    def __init__(self):
         super().__init__()
 
         # Window properties
@@ -43,14 +44,15 @@ class Visualizer(ShowBase):
         self.selected_object_iter = 0
 
         # Initialize simulation
-        self.realist_view = realist_view
+        self.realist_view = config.REALIST_VIEW
         self.sim_paused = False
         self.units = u.Rjup
         # Initialize Universe, and populate with Sol
         self.universe = Universe()
 
         # TODO: create a load_system method
-        system = sol.create_Sol_system(self.universe)
+        ss_loader = StarSystemLoader(self.universe)
+        system = ss_loader.load('sol')
         self.light_emitters = []
         for obj in system:
             texture = None
@@ -60,8 +62,8 @@ class Visualizer(ShowBase):
             if obj.name in sol.model_map:
                 model = sol.model_map[obj.name]
             self.objects_to_display.append(
-                ObjectDisplay(base, obj,
-                              units=self.units, realist_view=realist_view, model_path=model,
+                ObjectDisplay(self, obj,
+                              units=self.units, realist_view=self.realist_view, model_path=model,
                               textures=texture)
                 )
         for obj1 in self.objects_to_display:
@@ -86,14 +88,6 @@ class Visualizer(ShowBase):
 
         self.display_infos()
         self.hud.update_axis(self.cam)
-
-        if config.VERBOSE:
-            print('===============================================================')
-            print(str(self.universe))
-
-        if config.CSV:
-            with open(config.CSV_OUTPUT, 'w') as f:
-                f.write(self.universe.to_csv())
 
         if not self.sim_paused:
             self.universe.update()
