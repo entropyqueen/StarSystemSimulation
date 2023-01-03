@@ -28,7 +28,7 @@ take a look at https://github.com/entropyqueen/StarSystemSimulation/blob/main/co
 
 ### Panda3d
 
-`python3 main.py panda3d`
+`python3 main.py -d panda3d ./star_systems/sol.yml`
 
 https://user-images.githubusercontent.com/2721112/210183033-ddf1c996-5aae-417b-9097-2993e893436a.mp4
 
@@ -60,7 +60,7 @@ Here is the default keymap:
 ### Matplotlib
 
 Launch with
-`python3 main.py matplotlib`
+`python3 main.py -d matplotlib ./star_systems/sol.yml`
 
 https://user-images.githubusercontent.com/2721112/210183047-ba376825-266e-4abc-a464-29387ae990bf.mp4
 
@@ -68,7 +68,7 @@ https://user-images.githubusercontent.com/2721112/210183047-ba376825-266e-4abc-a
 ### Text
 
 ```
-$ python3 ./main.py text
+$ python3 ./main.py ./star_systems/sol.yml
 ===============================================================
 Body: #0
 Sun: (mass: 333030.0 earthMass)
