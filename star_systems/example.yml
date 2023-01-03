@@ -1,0 +1,37 @@
+# Star System definition
+# example system
+
+config:
+  matplotlib_sim_size: 100_000
+
+units:
+  distance: km
+  mass: kg
+  time: s
+
+system:
+ - name: 'Star'
+   is_star: True
+   position: 0, 0, 0
+   velocity: 0, 0, 0
+   mass: 10e24
+   radius: 100
+   temperature: 3450
+   texture:
+     color: 'textures/2k_sun.jpg'
+
+ - name: 'Planet 1'
+   position: 0, 35000, 0
+   velocity: 5, 0, 0
+   mass: 200
+   radius: 10
+   color: '#b000b5'
+   texture:
+
+ - name: 'Planet 2'
+   position: 0, 0, 30000
+   velocity: 5, 2, -2
+   mass: 400
+   radius: 10
+   color: '#ff00ff'
+   texture:

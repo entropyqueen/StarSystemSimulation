@@ -65,7 +65,7 @@ class StarSystemObject:
             mass,
             position=(0, 0, 0),
             velocity=(0, 0, 0),
-            color='black',
+            color='#000000',
             name='object',
             radius=10,
             is_star=False,
@@ -74,9 +74,9 @@ class StarSystemObject:
         # Setting physical properties
         self.universe = universe
         self.mass = mass
-        self.position = np.array(position, dtype=np.double) * u.AU
-        self.velocity = np.array(velocity, dtype=np.double) * u.AU / u.d
-        self.acc = np.zeros(3, dtype=np.double) * u.AU / (u.d ** 2)
+        self.position = position  # * u.AU
+        self.velocity = velocity  # * u.AU / u.d
+        self.acc = np.zeros(3, dtype=np.double)  # * u.AU / (u.d ** 2)
 
         self.f = 0
 
@@ -119,7 +119,8 @@ class StarSystemObject:
         for body in self.universe.objects:
             if self == body:
                 continue
-            acc += self.calculate_acceleration(body)
+            a = self.calculate_acceleration(body)
+            acc += a
         self.velocity += acc * dt
         self.position += self.velocity * dt
         self.acc = acc

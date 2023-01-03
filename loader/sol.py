@@ -32,7 +32,6 @@ texture_map = {
     'Venus': {'color': 'textures/2k_venus_atmosphere.jpg'},
     'Jupiter': {'color': 'textures/2k_jupiter.jpg'},
     'Mercury': {'color': 'textures/2k_mercury.jpg'},
-    'MilkyWay': {'color': 'textures/2k_stars_milky_way.jpg'},
     'Pluto': {'color': 'textures/2k_pluto.jpg'},
 }
 

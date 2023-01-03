@@ -16,7 +16,7 @@ from visualizer.panda3d.skybox import SkyBox
 
 
 class Panda3dDisplay(ShowBase):
-    def __init__(self):
+    def __init__(self, star_system_path):
         super().__init__()
 
         # Window properties
@@ -45,15 +45,14 @@ class Panda3dDisplay(ShowBase):
 
         # Initialize simulation
         self.realist_view = config.REALIST_VIEW
-        self.sim_paused = False
-        self.units = u.Rjup
+        self.sim_paused = True
         # Initialize Universe, and populate with Sol
         self.universe = Universe()
 
-        # TODO: create a load_system method
+        # Load Star System
         ss_loader = StarSystemLoader(self.universe)
-        system = ss_loader.load('sol')
-        self.light_emitters = []
+        system, self.units, _ = ss_loader.load(star_system_path)
+
         for obj in system:
             texture = None
             model = './models/sphere.glb'
@@ -62,10 +61,12 @@ class Panda3dDisplay(ShowBase):
             if obj.name in sol.model_map:
                 model = sol.model_map[obj.name]
             self.objects_to_display.append(
-                ObjectDisplay(self, obj,
-                              units=self.units, realist_view=self.realist_view, model_path=model,
-                              textures=texture)
+                ObjectDisplay(
+                    self, obj,
+                    units=self.units['d_unit'], realist_view=self.realist_view,
+                    model_path=model, textures=texture
                 )
+            )
         for obj1 in self.objects_to_display:
             if obj1.obj.is_star:
                 for obj2 in self.objects_to_display:

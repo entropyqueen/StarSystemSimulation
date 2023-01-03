@@ -8,17 +8,14 @@ class TextDisplay:
     Simple text display
     """
 
-    def __init__(self):
+    def __init__(self, star_system_path):
         self.universe = Universe()
         ss_loader = StarSystemLoader(self.universe)
-        ss_loader.load('sol')
+        ss_loader.load(star_system_path)
 
     def run(self):
-
         while True:
-
             self.universe.update()
-
             print('===============================================================')
             print(str(self.universe))
 

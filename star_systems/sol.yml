@@ -1,0 +1,138 @@
+# Star System definition
+# Sol
+
+config:
+  # Here the size will be in AU and not in km,
+  # because loading from Horizons returns positions in AU.
+  matplotlib_sim_size: 10
+
+units:
+  distance: km
+  mass: Mearth
+  time: d
+
+system:
+ - name: 'Sun'
+   is_star: True
+   position: 'get_from_nasa_Horizons'
+   velocity: 'get_from_nasa_Horizons'
+   horizons_id: 'Sun'
+   horizons_location_ref: '@sun'
+   mass: 333030
+   radius: 696340
+   temperature: 5778
+   texture:
+     color: 'textures/2k_sun.jpg'
+
+ - name: 'Mercury'
+   position: 'get_from_nasa_Horizons'
+   velocity: 'get_from_nasa_Horizons'
+   horizons_id: 'Mercury barycenter'
+   horizons_location_ref: '@sun'
+   mass: 0.055
+   radius: 2439.7
+   texture:
+     color: 'textures/2k_mercury.jpg'
+
+ - name: 'Venus'
+   position: 'get_from_nasa_Horizons'
+   velocity: 'get_from_nasa_Horizons'
+   horizons_id: 'Venus barycenter'
+   horizons_location_ref: '@sun'
+   mass: 0.815
+   radius: 6051.8
+   texture:
+     color: 'textures/2k_venus_atmosphere.jpg'
+
+ - name: 'Earth'
+   position: 'get_from_nasa_Horizons'
+   velocity: 'get_from_nasa_Horizons'
+   horizons_id: '399'
+   horizons_location_ref: '@sun'
+   mass: 1
+   radius: 6371
+   texture:
+     color: 'textures/2k_earth_daymap.jpg'
+     specular: 'textures/2k_earth_specular_map.tif'
+     normal: 'textures/2k_earth_normal_map.tif'
+
+# - name: 'Moon'
+#   position: 'get_from_nasa_Horizons'
+#   velocity: 'get_from_nasa_Horizons'
+#   horizons_id: '301'
+#   horizons_location_ref: '@sun'
+#   mass: 0.0123
+#   radius: 1737.4
+#   texture:
+#     color: 'textures/2k_moon.jpg'
+
+ - name: 'Mars'
+   position: 'get_from_nasa_Horizons'
+   velocity: 'get_from_nasa_Horizons'
+   horizons_id: 'Mars barycenter'
+   horizons_location_ref: '@sun'
+   mass: 0.107
+   radius: 3389.5
+   texture:
+     color: 'textures/2k_mars.jpg'
+
+ - name: 'Ceres'
+   position: 'get_from_nasa_Horizons'
+   velocity: 'get_from_nasa_Horizons'
+   horizons_id: 'Ceres'
+   horizons_location_ref: '@sun'
+   mass: 0.00016
+   radius: 473
+   texture:
+     color: 'textures/2k_ceres_fictional.jpg'
+
+ - name: 'Jupiter'
+   position: 'get_from_nasa_Horizons'
+   velocity: 'get_from_nasa_Horizons'
+   horizons_id: 'Jupiter bary'
+   horizons_location_ref: '@sun'
+   mass: 317.8
+   radius: 69911
+   texture:
+     color: 'textures/2k_jupiter.jpg'
+
+ - name: 'Saturn'
+   position: 'get_from_nasa_Horizons'
+   velocity: 'get_from_nasa_Horizons'
+   horizons_id: 'Saturn bary'
+   horizons_location_ref: '@sun'
+   mass: 95.16
+   radius: 58232
+   texture:
+     color: 'textures/2k_jupiter.jpg'
+   model: 'models/saturn.glb'
+
+ - name: 'Uranus'
+   position: 'get_from_nasa_Horizons'
+   velocity: 'get_from_nasa_Horizons'
+   horizons_id: 'Uranus bary'
+   horizons_location_ref: '@sun'
+   mass: 14.54
+   radius: 25362
+   texture:
+     color: 'textures/2k_uranus.jpg'
+
+ - name: 'Neptune'
+   position: 'get_from_nasa_Horizons'
+   velocity: 'get_from_nasa_Horizons'
+   horizons_id: 'Neptune bary'
+   horizons_location_ref: '@sun'
+   mass: 17.15
+   radius: 24622
+   texture:
+     color: 'textures/2k_neptune.jpg'
+
+ - name: 'Pluto'
+   position: 'get_from_nasa_Horizons'
+   velocity: 'get_from_nasa_Horizons'
+   horizons_id: 'Pluto bary'
+   horizons_location_ref: '@sun'
+   mass: 0.00218
+   radius: 1188.3
+   texture:
+     color: 'textures/2k_pluto.jpg'

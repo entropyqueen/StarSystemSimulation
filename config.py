@@ -20,8 +20,7 @@ SIM_START_DATE = astrotime.Time(datetime.now().strftime('%Y-%m-%d'))
 # this value as the delta of time elapsed between each cycle.
 # So the higher the value, the higher the error for every cycle
 # But smaller value means slower simulation.
-SIM_DT = 1 * units.d
-
+SIM_DT = 1 * units.h
 
 ##########################
 #     Informationnal     #
