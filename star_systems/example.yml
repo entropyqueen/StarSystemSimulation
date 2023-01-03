@@ -3,13 +3,24 @@
 
 config:
   matplotlib_sim_size: 500_000
+  # dt is the time interval between each iteration of the simulation
+  # since we are integrating the position through time, the higher the dt, the higher the error margin
+  # however, a really small dt will make the simulation really slow.
+  # It is expressed using the time unit in the yaml file
+  # if not specified, we use SIM_DT in config.py
   dt: 3600
 
+# Units are used to specify dimensions in the yaml file
+# units are from https://docs.astropy.org/en/stable/units/index.html
+# use adequate types of units or things will break ¯\_(ツ)_/¯
 units:
   distance: km
   mass: kg
   time: s
 
+
+# Let's define a simple system
+# a star and two planets
 system:
  - name: 'Star'
    is_star: True

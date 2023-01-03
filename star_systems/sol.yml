@@ -5,7 +5,7 @@ config:
   # Here the size will be in AU and not in km,
   # because loading from Horizons returns positions in AU.
   matplotlib_sim_size: 10
-  # dt is the time inteval between each iteration of the simulation
+  # dt is the time interval between each iteration of the simulation
   # since we are integrating the position through time, the higher the dt, the higher the error margin
   # however, a really small dt will make the simulation really slow.
   # It is expressed using the time unit in the yaml file
