@@ -10,10 +10,10 @@ import config
 
 class ObjectDisplay:
 
-    def __init__(self, star_system_obj, model_path='./models/sphere.glb',
+    def __init__(self, base, star_system_obj, model_path='./models/sphere.glb',
                  textures=None, units=u.AU, realist_view=False):
 
-        self.zoom_factor = config.DEFAULT_ZOOM
+        self.base = base
 
         self.units = units
         self.realist_view = realist_view
@@ -93,14 +93,14 @@ class ObjectDisplay:
 
     def compute_display_pos(self):
         if self.realist_view:
-            return LPoint3f(*[self.convert_distances(x) * self.zoom_factor for x in self.obj.position])
+            return LPoint3f(*[self.convert_distances(x) * self.base.zoom_factor for x in self.obj.position])
         # When not realist view, don't zoom on distances because it's a fucking mess
         return LPoint3f(*[self.convert_distances(x) / 10 for x in self.obj.position])
 
     def compute_scale(self):
         if config.STANDARDIZE_BODY_SIZES:
             return config.STANDARD_BODY_SIZE
-        size = self.radius * 2 * self.zoom_factor
+        size = self.radius * 2 * self.base.zoom_factor
         if self.realist_view:
             return size
         return config.DEFAULT_BODY_SIZES + math.log10(size)
