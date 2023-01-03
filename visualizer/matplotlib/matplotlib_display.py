@@ -25,7 +25,7 @@ class MatplotlibDisplay:
         ss_loader = StarSystemLoader(self.universe)
         system, self.units, load_config = ss_loader.load(star_system_path)
         for obj in system:
-            self.add_object(BodyView(obj))
+            self.add_object(BodyView(obj.sso))
         try:
             self.size = load_config['matplotlib_sim_size']
         except KeyError:

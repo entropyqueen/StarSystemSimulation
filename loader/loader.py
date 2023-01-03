@@ -63,6 +63,16 @@ class StarSystemLoader:
                 obj_color = obj['color']
             except KeyError:
                 obj_color = (0.8, 0, 0.8)
+
+            try:
+                textures = obj['texture']
+            except KeyError:
+                textures = {}
+            try:
+                model = obj['model']
+            except KeyError:
+                model = 'models/sphere.glb'
+
             try:
                 if obj['position'] == 'get_from_nasa_Horizons' or obj['velocity'] == 'get_from_nasa_Horizons':
                     nasa_id = obj['horizons_id']
@@ -88,7 +98,7 @@ class StarSystemLoader:
                 name=obj_name, radius=obj_radius,
                 is_star=is_star, temp=obj_temp, color=obj_color,
             )
-            system.append(sso)
+            system.append(LoadedObject(sso, textures, model))
         return system
 
     def load(self, system_path):
@@ -108,7 +118,18 @@ class StarSystemLoader:
 
         system = self.load_system(data, d_unit, m_unit, t_unit)
 
+        load_config = {}
         if 'config' in data:
             load_config = data['config']
+        if 'dt' in load_config:
+            self.universe.dt = load_config['dt'] * t_unit
 
         return system, units, load_config
+
+
+class LoadedObject:
+
+    def __init__(self, star_system_object, textures, model_path):
+        self.sso = star_system_object
+        self.textures = textures
+        self.model_path = model_path

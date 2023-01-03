@@ -5,22 +5,44 @@ config:
   # Here the size will be in AU and not in km,
   # because loading from Horizons returns positions in AU.
   matplotlib_sim_size: 10
+  # dt is the time inteval between each iteration of the simulation
+  # since we are integrating the position through time, the higher the dt, the higher the error margin
+  # however, a really small dt will make the simulation really slow.
+  # It is expressed using the time unit in the yaml file
+  # if not specified, we use SIM_DT in config.py
+  dt: 24
 
+# Units are used to specify dimensions in the yaml file
+# units are from https://docs.astropy.org/en/stable/units/index.html
+# use adequate types of units or things will break ¯\_(ツ)_/¯
 units:
   distance: km
   mass: Mearth
-  time: d
+  time: h
 
 system:
+ # Give a name to your object
  - name: 'Sun'
+   # Set to true if the object is a star
    is_star: True
+
+   # Nasa Horizons allows to get precise position and velocity of existing bodies in our solar system
+   # To use it, we need to specify an id, from Nasa Horizons' catalog
+   # The location references allows to get position and velocity relative to the given position
    position: 'get_from_nasa_Horizons'
    velocity: 'get_from_nasa_Horizons'
    horizons_id: 'Sun'
    horizons_location_ref: '@sun'
+   # Mass expressed in the mass unit above
    mass: 333030
+   # Radius expressed in the distance unit above
+   # this is used only if REALIST_VIEW is True and STANDARDIZE_BODY_SIZES is False
    radius: 696340
+   # Temperature, in K, changes the color of the light the star emits
    temperature: 5778
+
+   # Texture, allows to specify multiple textures
+   # existing attributes are: color, specular, normal
    texture:
      color: 'textures/2k_sun.jpg'
 
@@ -103,8 +125,7 @@ system:
    horizons_location_ref: '@sun'
    mass: 95.16
    radius: 58232
-   texture:
-     color: 'textures/2k_jupiter.jpg'
+   # You can specify which 3dModel to use, here, saturn.glb already contains a texture
    model: 'models/saturn.glb'
 
  - name: 'Uranus'

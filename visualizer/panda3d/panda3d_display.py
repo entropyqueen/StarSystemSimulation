@@ -54,17 +54,13 @@ class Panda3dDisplay(ShowBase):
         system, self.units, _ = ss_loader.load(star_system_path)
 
         for obj in system:
-            texture = None
-            model = './models/sphere.glb'
-            if obj.name in sol.texture_map:
-                texture = sol.texture_map[obj.name]
-            if obj.name in sol.model_map:
-                model = sol.model_map[obj.name]
+            textures = obj.textures
+            model = obj.model_path
             self.objects_to_display.append(
                 ObjectDisplay(
-                    self, obj,
+                    self, obj.sso,
                     units=self.units['d_unit'], realist_view=self.realist_view,
-                    model_path=model, textures=texture
+                    model_path=model, textures=textures
                 )
             )
         for obj1 in self.objects_to_display:

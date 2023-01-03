@@ -2,7 +2,8 @@
 # example system
 
 config:
-  matplotlib_sim_size: 100_000
+  matplotlib_sim_size: 500_000
+  dt: 3600
 
 units:
   distance: km
@@ -26,7 +27,6 @@ system:
    mass: 200
    radius: 10
    color: '#b000b5'
-   texture:
 
  - name: 'Planet 2'
    position: 0, 0, 30000
@@ -34,4 +34,4 @@ system:
    mass: 400
    radius: 10
    color: '#ff00ff'
-   texture:
+   model: 'models/saturn.glb'
