@@ -1,4 +1,6 @@
 from panda3d.core import LPoint3f, WindowProperties
+from direct.gui.OnscreenText import OnscreenText, TextNode
+
 
 import config
 
@@ -6,6 +8,8 @@ import config
 class Actions:
 
     def __init__(self, base):
+        self.help_text_node = None
+        self.help_is_display = False
         self.base = base
 
         self.last_mouse_x = self.base.win.getProperties().getXSize() / 2
@@ -98,3 +102,19 @@ class Actions:
 
     def sim_pause(self):
         self.base.sim_paused = not self.base.sim_paused
+
+    def toggle_help(self):
+        if self.help_is_display:
+            self.help_text_node.destroy()
+        else:
+            help_text = 'Help:\n  Repeating keys:'
+            for k, v in config.KEYMAP_REP.items():
+                help_text += f'    {k}:\t\t{v}\n'
+            help_text += '\n  One time keys:\n'
+            for k, v in config.KEYMAP_ONCE.items():
+                help_text += f'    {k}:\t\t{v}\n'
+            self.help_text_node = OnscreenText(
+                text=help_text, pos=(1, -0.1), fg=(1, 1, 1, 1),
+                parent=self.base.a2dTopLeft, align=TextNode.ALeft, scale=.04
+            )
+        self.help_is_display = not self.help_is_display

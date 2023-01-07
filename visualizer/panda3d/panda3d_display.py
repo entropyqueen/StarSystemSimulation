@@ -1,6 +1,6 @@
 from direct.showbase.ShowBase import ShowBase
 from panda3d.core import WindowProperties
-from direct.filter.CommonFilters import CommonFilters
+
 from astropy import units as u
 import numpy as np
 
@@ -8,7 +8,7 @@ import config
 from loader.loader import StarSystemLoader
 from utils import hex_to_rgb_norm
 from physics.universe import Universe
-from loader import sol
+
 from visualizer.panda3d.inputs import Inputs
 from visualizer.panda3d.hud import Hud
 from visualizer.panda3d.object_display import ObjectDisplay

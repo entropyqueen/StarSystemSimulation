@@ -114,6 +114,7 @@ KEYMAP_ONCE = {
     'PAUSE': 'p',  # pause the simulation
     'MOUSE_SWITCH_MODE': 'mouse2',  # Switch between camera and select mode
     'DELETE': 'delete',  # delete selected object from simulation
+    'HELP': 'f1',  # Display help message
     'QUIT': 'escape'  # quit the simulator
 }
 

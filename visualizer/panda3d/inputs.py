@@ -53,6 +53,8 @@ class Inputs:
                 self.base.accept(v, self.actions.mouse_switch_mode)
             if k == 'DELETE':
                 self.base.accept(v, self.actions.delete_selected)
+            if k == 'HELP':
+                self.base.accept(v, self.actions.toggle_help)
             if k == 'QUIT':
                 self.base.accept(v, sys.exit)
 
