@@ -16,9 +16,8 @@ class Inputs:
             self.keymap_rep[k] = False
         self.cam_speed = config.CAM_SPEED
         self.cam_rotation_speed = config.CAM_ROTATION_SPEED
-        self.last_mouse_x = self.base.win.getProperties().getXSize() / 2
-        self.last_mouse_y = self.base.win.getProperties().getYSize() / 2
-        self.recenter_mouse()
+        self.last_mouse_x = 0
+        self.last_mouse_y = 0
 
         self.actions = Actions(base)
 
@@ -94,15 +93,6 @@ class Inputs:
             if self.cam_speed < config.MIN_CAM_ROTATION_SPEED:
                 self.cam_speed = config.MIN_CAM_ROTATION_SPEED
         return task.cont
-
-    def recenter_mouse(self):
-        self.last_mouse_x = self.base.win.getProperties().getXSize() / 2
-        self.last_mouse_y = self.base.win.getProperties().getYSize() / 2
-        self.base.win.movePointer(
-            0,
-            int(self.base.win.getProperties().getXSize() / 2),
-            int(self.base.win.getProperties().getYSize() / 2)
-        )
 
     def mouse_control(self, task):
         if self.base.win.getProperties().get_mouse_mode() == WindowProperties.M_absolute:
