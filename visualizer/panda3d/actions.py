@@ -45,7 +45,6 @@ class Actions:
             wp.setMouseMode(WindowProperties.M_relative)
             wp.setCursorHidden(True)
         self.base.win.requestProperties(wp)
-        self.focus_selected()
 
     def delete_selected(self):
         if self.base.selected_object is not None:
@@ -104,10 +103,13 @@ class Actions:
 
     def sim_pause(self):
         self.base.sim_paused = not self.base.sim_paused
+        self.pause_message()
+
+    def pause_message(self):
         if self.base.sim_paused:
             self.pause_text_node = OnscreenText(
-                text=f'     == PAUSED ==\n(press {config.KEYMAP_ONCE["PAUSE"]} to resume)',
-                pos=(1.5, -1), fg=(1, 1, 1, 1),
+                text=f'SIMULATION IS PAUSED (press {config.KEYMAP_ONCE["PAUSE"]} to resume)',
+                pos=(0.1, -1.93), fg=(1, 1, 1, 1),
                 parent=self.base.a2dTopLeft, align=TextNode.ALeft, scale=.05
             )
         elif self.pause_text_node is not None:

@@ -44,6 +44,7 @@ class Panda3dDisplay(ShowBase):
         # Initialize simulation
         self.realist_view = config.REALIST_VIEW
         self.sim_paused = True
+        self.inputs.actions.pause_message()
         # Initialize Universe, and populate with Sol
         self.universe = Universe()
 
