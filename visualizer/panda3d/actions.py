@@ -10,6 +10,7 @@ class Actions:
     def __init__(self, base):
         self.help_text_node = None
         self.help_is_display = False
+        self.pause_text_node = None
         self.base = base
 
         self.last_mouse_x = self.base.win.getProperties().getXSize() / 2
@@ -44,6 +45,7 @@ class Actions:
             wp.setMouseMode(WindowProperties.M_relative)
             wp.setCursorHidden(True)
         self.base.win.requestProperties(wp)
+        self.focus_selected()
 
     def delete_selected(self):
         if self.base.selected_object is not None:
@@ -102,11 +104,25 @@ class Actions:
 
     def sim_pause(self):
         self.base.sim_paused = not self.base.sim_paused
+        if self.base.sim_paused:
+            self.pause_text_node = OnscreenText(
+                text=f'     == PAUSED ==\n(press {config.KEYMAP_ONCE["PAUSE"]} to resume)',
+                pos=(1.5, -1), fg=(1, 1, 1, 1),
+                parent=self.base.a2dTopLeft, align=TextNode.ALeft, scale=.05
+            )
+        elif self.pause_text_node is not None:
+            self.pause_text_node.destroy()
+            self.pause_text_node = None
 
     def toggle_help(self):
         if self.help_is_display:
             self.help_text_node.destroy()
+            self.help_text_node = None
+            if self.pause_text_node is not None:
+                self.pause_text_node.show()
         else:
+            if self.pause_text_node is not None:
+                self.pause_text_node.hide()
             help_text = 'Help:\n  Repeating keys:'
             for k, v in config.KEYMAP_REP.items():
                 help_text += f'    {k}:\t\t{v}\n'
