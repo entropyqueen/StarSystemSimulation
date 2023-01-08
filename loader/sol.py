@@ -13,46 +13,6 @@ Units:
  Masses in Earth's mass
 """
 
-model_map = {
-    'Saturn': 'models/saturn.glb',
-}
-
-texture_map = {
-    'Neptune': {'color': 'textures/2k_neptune.jpg'},
-    'Ceres': {'color': 'textures/2k_ceres_fictional.jpg'},
-    'Earth': {
-        'color': 'textures/2k_earth_daymap.jpg',
-        'specular': 'textures/2k_earth_specular_map.tif',
-        'normal': 'textures/2k_earth_normal_map.tif',
-    },
-    'Mars': {'color': 'textures/2k_mars.jpg'},
-    'Moon': {'color': 'textures/2k_moon.jpg'},
-    'Sun': {'color': 'textures/2k_sun.jpg'},
-    'Uranus': {'color': 'textures/2k_uranus.jpg'},
-    'Venus': {'color': 'textures/2k_venus_atmosphere.jpg'},
-    'Jupiter': {'color': 'textures/2k_jupiter.jpg'},
-    'Mercury': {'color': 'textures/2k_mercury.jpg'},
-    'Pluto': {'color': 'textures/2k_pluto.jpg'},
-}
-
-
-def create_Sol_system(universe):
-    return [
-        Sun(universe),
-        # Sun2(universe),
-        Mercury(universe),
-        Venus(universe),
-        Earth(universe),
-        # Moon(universe),  # The Moon doesn't behave accordingly with the current position and velocity...
-        Mars(universe),
-        Ceres(universe),
-        Jupiter(universe),
-        Saturn(universe),
-        Uranus(universe),
-        Neptune(universe),
-        Pluto(universe),
-    ]
-
 class Sun(StarSystemObject):
     def __init__(self, universe, display_class=None):
         self.name = 'Sun'
