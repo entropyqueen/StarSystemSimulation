@@ -72,8 +72,7 @@ class Panda3dDisplay(ShowBase):
         # Launch simulation
         self.update_task = self.taskMgr.add(self.update, 'update')
         self.inputs.start_task()
-
-        # self.cam.lookAt(self.select_object_next().obj_node_path)
+        self.inputs.actions.focus_selected()
 
     def init_default_display(self):
         self.setBackgroundColor(*hex_to_rgb_norm('#000000'))
