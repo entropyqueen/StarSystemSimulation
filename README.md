@@ -18,18 +18,28 @@ the various objects in the system.
 
 We then compute the position of each object through n-body simulation.
 
-## Interfaces
+## Usage:
+
+Clone the repo:
+```bash
+$ git clone https://github.com/entropyqueen/StarSystemSimulation.git
+```
+
+Create python virtualenv and install dependencies:
+```bash
+$ python3 -m venv .env
+$ . .env/bin/activate
+$ pip install -r requirements.txt
+```
+
 
 There are three interfaces possible, one using `matplotlib`, the other using `panda3d`, and the latest which only display text informations
 
-### Configuration:
-
-take a look at https://github.com/entropyqueen/StarSystemSimulation/blob/main/config.py 
-
 ### Panda3d
 
-`python3 main.py -d panda3d ./star_systems/sol.yml`
-
+```bash
+$ python3 main.py -d panda3d ./star_systems/sol.yml
+```
 https://user-images.githubusercontent.com/2721112/210183033-ddf1c996-5aae-417b-9097-2993e893436a.mp4
 
 The keymap can be changed in config.py.
@@ -60,7 +70,9 @@ Here is the default keymap:
 ### Matplotlib
 
 Launch with
-`python3 main.py -d matplotlib ./star_systems/sol.yml`
+```bash
+$ python3 main.py -d matplotlib ./star_systems/sol.yml`
+```
 
 https://user-images.githubusercontent.com/2721112/210183047-ba376825-266e-4abc-a464-29387ae990bf.mp4
 
@@ -160,3 +172,7 @@ f:			6.431e+16 N
 ===============================================================
 ```
 
+
+### Configuration:
+
+take a look at https://github.com/entropyqueen/StarSystemSimulation/blob/main/config.py 
