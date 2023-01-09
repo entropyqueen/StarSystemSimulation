@@ -90,8 +90,10 @@ class ObjectDisplay:
         return LPoint3f(*[self.convert_distances(x) / 10 for x in self.obj.position])
 
     def compute_scale(self):
-        if config.STANDARDIZE_BODY_SIZES:
+        if config.STANDARDIZE_BODY_SIZES and not self.obj.is_star:
             return config.STANDARD_BODY_SIZE
+        elif config.STANDARD_BODY_SIZE:
+            return config.STANDARD_BODY_SIZE * 2
         size = self.radius * 2 * self.base.zoom_factor
         if self.realist_view:
             return size
@@ -107,6 +109,8 @@ class ObjectDisplay:
         self.history_points.clear()
 
     def handle_history(self):
+        if self.base.sim_paused:
+            return
         self.history_steps_ctr += 1
         if self.history_steps_ctr == config.HISTORY_STEP:
             self.history_steps_ctr = 0
@@ -122,7 +126,7 @@ class ObjectDisplay:
                     lines.moveTo(p)
                     lines.drawTo(self.history_points[i + 1])
                     lines.setColor(*hex_to_rgb_norm(self.obj.color), 1)
-                    lines.setThickness(0)
+                    lines.setThickness(0.01)
                     node = lines.create()
                     np = NodePath(node)
                     np.reparentTo(render)
