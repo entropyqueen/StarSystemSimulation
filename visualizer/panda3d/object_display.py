@@ -33,8 +33,6 @@ class ObjectDisplay:
         self.obj_node_path = render.attachNewNode(f'{self.designation_name}_trajectory')
         self.obj_model = loader.loadModel(model_path)
         self.obj_model.reparentTo(self.obj_node_path)
-        if model_path == './models/sphere.glb':
-            self.obj_model.setP(-90)
 
         if not config.HIDE_LABEL:
             self.label = TextNode(f'{self.obj.name}')
