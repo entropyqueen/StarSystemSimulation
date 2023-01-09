@@ -53,6 +53,7 @@ system:
    horizons_location_ref: '@sun'
    mass: 0.055
    radius: 2439.7
+   color: '#708090'
    texture:
      color: 'textures/2k_mercury.jpg'
 
@@ -63,6 +64,7 @@ system:
    horizons_location_ref: '@sun'
    mass: 0.815
    radius: 6051.8
+   color: '#ffffe0'
    texture:
      color: 'textures/2k_venus_atmosphere.jpg'
 
@@ -73,6 +75,7 @@ system:
    horizons_location_ref: '@sun'
    mass: 1
    radius: 6371
+   color: '#287ab8'
    texture:
      color: 'textures/2k_earth_daymap.jpg'
      specular: 'textures/2k_earth_specular_map.tif'
@@ -85,6 +88,7 @@ system:
 #   horizons_location_ref: '@sun'
 #   mass: 0.0123
 #   radius: 1737.4
+#   color: '#7d7d7d'
 #   texture:
 #     color: 'textures/2k_moon.jpg'
 
@@ -95,6 +99,7 @@ system:
    horizons_location_ref: '@sun'
    mass: 0.107
    radius: 3389.5
+   color: '#69340f'
    texture:
      color: 'textures/2k_mars.jpg'
 
@@ -105,6 +110,7 @@ system:
    horizons_location_ref: '@sun'
    mass: 0.00016
    radius: 473
+   color: '#9d97a4'
    texture:
      color: 'textures/2k_ceres_fictional.jpg'
 
@@ -115,6 +121,7 @@ system:
    horizons_location_ref: '@sun'
    mass: 317.8
    radius: 69911
+   color: '#bcafb2'
    texture:
      color: 'textures/2k_jupiter.jpg'
 
@@ -125,6 +132,7 @@ system:
    horizons_location_ref: '@sun'
    mass: 95.16
    radius: 58232
+   color: '#a68a60'
    # You can specify which 3dModel to use, here, saturn.glb already contains a texture
    model: 'models/saturn.glb'
 
@@ -135,6 +143,7 @@ system:
    horizons_location_ref: '@sun'
    mass: 14.54
    radius: 25362
+   color: '#d1e7e7'
    texture:
      color: 'textures/2k_uranus.jpg'
 
@@ -145,6 +154,7 @@ system:
    horizons_location_ref: '@sun'
    mass: 17.15
    radius: 24622
+   color: '#5b5ddf'
    texture:
      color: 'textures/2k_neptune.jpg'
 
@@ -155,5 +165,6 @@ system:
    horizons_location_ref: '@sun'
    mass: 0.00218
    radius: 1188.3
+   color: '#fff1d5'
    texture:
      color: 'textures/2k_pluto.jpg'
