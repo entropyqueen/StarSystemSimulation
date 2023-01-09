@@ -33,7 +33,8 @@ class ObjectDisplay:
         self.obj_node_path = render.attachNewNode(f'{self.designation_name}_trajectory')
         self.obj_model = loader.loadModel(model_path)
         self.obj_model.reparentTo(self.obj_node_path)
-        self.obj_model.setP(90)
+        if model_path == './models/sphere.glb':
+            self.obj_model.setP(-90)
 
         if not config.HIDE_LABEL:
             self.label = TextNode(f'{self.obj.name}')
@@ -47,7 +48,11 @@ class ObjectDisplay:
         if textures is not None:
             if 'color' in textures:
                 color_map = loader.loadTexture(textures['color'])
-                self.obj_model.setTexture(color_map, 1)
+                ts = self.obj_model.findTextureStage('0')
+                if ts is None:
+                    ts = TextureStage('ts')
+                    ts.setMode(TextureStage.MModulate)
+                self.obj_model.setTexture(ts, color_map, 1)
         else:
             self.obj_model.setColor(*hex_to_rgb_norm(self.obj.color))
 
@@ -58,18 +63,11 @@ class ObjectDisplay:
             self.light_node_path.setPos(*self.pos)
 
             alight = AmbientLight('alight')
-            alight.setColor((1, 1, 1, 1))
+            alight.setColorTemperature(self.obj.temp)
             alnp = self.obj_node_path.attachNewNode(alight)
             self.obj_model.setLight(alnp)
-
-            glow_map = loader.loadTexture('textures/white.jpg')  # a tiny black image
-            ts = TextureStage('ts')
-            ts.setMode(TextureStage.MGlow)
-            self.obj_model.setTexture(ts, glow_map)
         else:
             self.light = None
-
-        self.obj_node_path.setShaderAuto()
 
         # Init position and size
         self.obj_node_path.setScale(self.scale)
@@ -93,7 +91,8 @@ class ObjectDisplay:
         if config.STANDARDIZE_BODY_SIZES and not self.obj.is_star:
             return config.STANDARD_BODY_SIZE
         elif config.STANDARD_BODY_SIZE:
-            return config.STANDARD_BODY_SIZE * 2
+            return config.STANDARD_BODY_SIZE * 1.5
+        # Otherwise, we compute a normal size based on the given parameters
         size = self.radius * 2 * self.base.zoom_factor
         if self.realist_view:
             return size

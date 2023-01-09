@@ -60,7 +60,7 @@ class Hud:
         self.axis.setR(cam.getR())
 
     def init_axis(self):
-        self.axis = loader.loadModel('./models/axis.bam')
+        self.axis = loader.loadModel('./models/axis.glb')
         self.axis.setScale(0.05)
         self.axis.setPos(self.base.a2dTopRight, -0.2, 0, -0.2)
         self.axis.reparentTo(render2d)

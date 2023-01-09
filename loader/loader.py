@@ -71,7 +71,7 @@ class StarSystemLoader:
             try:
                 model = obj['model']
             except KeyError:
-                model = 'models/sphere.glb'
+                model = './models/sphere.glb'
 
             try:
                 if obj['position'] == 'get_from_nasa_Horizons' or obj['velocity'] == 'get_from_nasa_Horizons':
