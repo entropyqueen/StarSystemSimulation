@@ -27,6 +27,9 @@ class Panda3dDisplay(ShowBase):
         wp.setSize(config.DISPLAY_WIDTH, config.DISPLAY_HEIGHT)
         self.win.requestProperties(wp)
 
+        if config.SHOW_FPS:
+            self.setFrameRateMeter(True)
+
         # Initialize display settings
         SkyBox(self)
         self.hud = Hud(self)
@@ -79,8 +82,6 @@ class Panda3dDisplay(ShowBase):
         self.setBackgroundColor(*hex_to_rgb_norm('#000000'))
 
     def update(self, task):
-        dt = globalClock.getDt()
-
         self.display_infos()
         self.hud.update_axis(self.cam)
 

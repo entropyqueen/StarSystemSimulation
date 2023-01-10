@@ -130,11 +130,18 @@ class ObjectDisplay:
                     self.history.append(np)
 
     def update(self):
+        dt = globalClock.getDt()
         self.pos = self.compute_display_pos()
         self.radius = self.convert_distances(self.obj.radius)
         self.scale = self.compute_scale()
 
         if config.HISTORY_ON:
             self.handle_history()
+        if self.obj.period != 0:
+            if not self.base.sim_paused:
+                # if sim not paused 1 frame == 1 sim dt
+                self.obj_model.setH(self.obj_model, 360 / self.obj.period)
+            else:
+                self.obj_model.setH(self.obj_model, 360 / (self.obj.period / dt))
         self.obj_model.setScale(self.scale)
         self.obj_node_path.setPos(*self.pos)

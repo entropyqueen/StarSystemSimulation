@@ -46,6 +46,9 @@ system:
    texture:
      color: 'textures/2k_sun.jpg'
 
+   body_rotation:
+     period: 648  # in units of time here, 27 days * 24 hours
+
  - name: 'Mercury'
    position: 'get_from_nasa_Horizons'
    velocity: 'get_from_nasa_Horizons'
@@ -53,9 +56,12 @@ system:
    horizons_location_ref: '@sun'
    mass: 0.055
    radius: 2439.7
+   body_rotation:
+     period: 4222.6
    color: '#708090'
    texture:
      color: 'textures/2k_mercury.jpg'
+
 
  - name: 'Venus'
    position: 'get_from_nasa_Horizons'
@@ -64,6 +70,8 @@ system:
    horizons_location_ref: '@sun'
    mass: 0.815
    radius: 6051.8
+   body_rotation:
+     period: 2802.0
    color: '#ffffe0'
    texture:
      color: 'textures/2k_venus_atmosphere.jpg'
@@ -75,6 +83,8 @@ system:
    horizons_location_ref: '@sun'
    mass: 1
    radius: 6371
+   body_rotation:
+     period: 24.0
    color: '#287ab8'
    texture:
      color: 'textures/2k_earth_daymap.jpg'
@@ -88,6 +98,8 @@ system:
 #   horizons_location_ref: '@sun'
 #   mass: 0.0123
 #   radius: 1737.4
+#   body_rotation:
+#     period: 708.7
 #   color: '#7d7d7d'
 #   texture:
 #     color: 'textures/2k_moon.jpg'
@@ -99,6 +111,8 @@ system:
    horizons_location_ref: '@sun'
    mass: 0.107
    radius: 3389.5
+   body_rotation:
+     period: 24.7
    color: '#69340f'
    texture:
      color: 'textures/2k_mars.jpg'
@@ -121,6 +135,8 @@ system:
    horizons_location_ref: '@sun'
    mass: 317.8
    radius: 69911
+   body_rotation:
+     period: 9.9
    color: '#bcafb2'
    texture:
      color: 'textures/2k_jupiter.jpg'
@@ -132,6 +148,8 @@ system:
    horizons_location_ref: '@sun'
    mass: 95.16
    radius: 58232
+   body_rotation:
+     period: 10.7
    color: '#a68a60'
    # You can specify which 3dModel to use, here, saturn.glb already contains a texture
    model: 'models/saturn.glb'
@@ -143,6 +161,8 @@ system:
    horizons_location_ref: '@sun'
    mass: 14.54
    radius: 25362
+   body_rotation:
+     period: 17.2
    color: '#d1e7e7'
    texture:
      color: 'textures/2k_uranus.jpg'
@@ -154,6 +174,8 @@ system:
    horizons_location_ref: '@sun'
    mass: 17.15
    radius: 24622
+   body_rotation:
+     period: 16.1
    color: '#5b5ddf'
    texture:
      color: 'textures/2k_neptune.jpg'
@@ -165,6 +187,8 @@ system:
    horizons_location_ref: '@sun'
    mass: 0.00218
    radius: 1188.3
+   body_rotation:
+     period: 153.3
    color: '#fff1d5'
    texture:
      color: 'textures/2k_pluto.jpg'

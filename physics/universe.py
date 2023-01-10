@@ -63,13 +63,14 @@ class StarSystemObject:
             self,
             universe,
             mass,
-            position=(0, 0, 0),
-            velocity=(0, 0, 0),
+            position=(0, 0, 0) * u.km,
+            velocity=(0, 0, 0) * (u.km/u.h),
             color='#000000',
             name='object',
-            radius=10,
+            radius=10 * u.km,
+            period=0 * u.h,
             is_star=False,
-            temp=5000,
+            temp=5000 * u.K,
     ):
         # Setting physical properties
         self.universe = universe
@@ -81,6 +82,7 @@ class StarSystemObject:
         self.f = 0
 
         self.radius = radius
+        self.period = period
         self.color = color
         if is_star:
             self.color = convert_K_to_RGB(temp)

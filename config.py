@@ -35,6 +35,7 @@ VERBOSE = False
 CSV = False
 CSV_OUTPUT = './logs.csv'
 
+SHOW_FPS = True
 
 ##########################
 #         Display        #
@@ -132,3 +133,6 @@ MAX_CAM_ROTATION_SPEED = 120
 MOUSE_SENSITIVITY = 5
 MOUSE_INVERT_X = False
 MOUSE_INVERT_Y = False
+
+# Specify if body rotation should continue while the simulation is paused
+BODY_ROTATE_ON_PAUSE = True
