@@ -55,10 +55,10 @@ DISPLAY_WIDTH = 1800
 DISPLAY_HEIGHT = 1100
 
 ZOOM_FACTOR_STEP = 2
-DEFAULT_ZOOM = 1
+DEFAULT_ZOOM = 1.0e-7
 
 HIDE_LABEL = False
-LABEL_SIZE = 0.15
+LABEL_SIZE = 0.13
 
 # Realist or non realist view
 # Setting to true will keep proper ratio between radius and distances
