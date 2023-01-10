@@ -80,11 +80,9 @@ class Actions:
         x, y, z = obj.pos
 
         dx = x + 10*obj.scale
-        dy = y + 10*obj.scale
-        dz = z + 10*obj.scale
-        #dst = np.linalg.norm(obj.obj.position - self.cam.getPos())  # distance in AU
-        #unit_v = (obj.obj.position - self.obj.position) / dst
-        #new_pos = LPoint3f(np.array(dx, dy, dz) * unit_v)
+        dy = y - 10*obj.scale
+        dz = z
+
         new_pos = LPoint3f(dx, dy, dz)
         self.base.cam.setPos(new_pos)
         self.base.cam.lookAt(obj.obj_node_path)

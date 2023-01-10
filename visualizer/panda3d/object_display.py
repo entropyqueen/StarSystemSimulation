@@ -67,6 +67,8 @@ class ObjectDisplay:
         else:
             self.light = None
 
+        self.obj_model.setR(self.obj.obliquity)
+
         # Init position and size
         self.obj_node_path.setScale(self.scale)
         self.obj_node_path.setPos(*self.pos)

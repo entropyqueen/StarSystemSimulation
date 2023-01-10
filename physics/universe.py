@@ -69,6 +69,7 @@ class StarSystemObject:
             name='object',
             radius=10 * u.km,
             period=0 * u.h,
+            obliquity=0,
             is_star=False,
             temp=5000 * u.K,
     ):
@@ -83,6 +84,7 @@ class StarSystemObject:
 
         self.radius = radius
         self.period = period
+        self.obliquity = obliquity
         self.color = color
         if is_star:
             self.color = convert_K_to_RGB(temp)

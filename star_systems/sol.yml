@@ -10,7 +10,7 @@ config:
   # however, a really small dt will make the simulation really slow.
   # It is expressed using the time unit in the yaml file
   # if not specified, we use SIM_DT in config.py
-  dt: 24
+  dt: 1
 
 # Units are used to specify dimensions in the yaml file
 # units are from https://docs.astropy.org/en/stable/units/index.html
@@ -58,6 +58,7 @@ system:
    radius: 2439.7
    body_rotation:
      period: 4222.6
+     obliquity: 0.01  # in degrees
    color: '#708090'
    texture:
      color: 'textures/2k_mercury.jpg'
@@ -72,6 +73,7 @@ system:
    radius: 6051.8
    body_rotation:
      period: 2802.0
+     obliquity: 2.64
    color: '#ffffe0'
    texture:
      color: 'textures/2k_venus_atmosphere.jpg'
@@ -85,6 +87,7 @@ system:
    radius: 6371
    body_rotation:
      period: 24.0
+     obliquity: 23.44
    color: '#287ab8'
    texture:
      color: 'textures/2k_earth_daymap.jpg'
@@ -100,6 +103,7 @@ system:
 #   radius: 1737.4
 #   body_rotation:
 #     period: 708.7
+#     obliquity: 1.54
 #   color: '#7d7d7d'
 #   texture:
 #     color: 'textures/2k_moon.jpg'
@@ -113,6 +117,7 @@ system:
    radius: 3389.5
    body_rotation:
      period: 24.7
+     obliquity: 25.19
    color: '#69340f'
    texture:
      color: 'textures/2k_mars.jpg'
@@ -137,6 +142,7 @@ system:
    radius: 69911
    body_rotation:
      period: 9.9
+     obliquity: 3.12
    color: '#bcafb2'
    texture:
      color: 'textures/2k_jupiter.jpg'
@@ -150,6 +156,7 @@ system:
    radius: 58232
    body_rotation:
      period: 10.7
+     obliquity: 26.73
    color: '#a68a60'
    # You can specify which 3dModel to use, here, saturn.glb already contains a texture
    model: 'models/saturn.glb'
@@ -163,6 +170,7 @@ system:
    radius: 25362
    body_rotation:
      period: 17.2
+     obliquity: 82.23
    color: '#d1e7e7'
    texture:
      color: 'textures/2k_uranus.jpg'
@@ -176,6 +184,7 @@ system:
    radius: 24622
    body_rotation:
      period: 16.1
+     obliquity: 28.33
    color: '#5b5ddf'
    texture:
      color: 'textures/2k_neptune.jpg'

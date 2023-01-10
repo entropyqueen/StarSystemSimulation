@@ -60,10 +60,13 @@ class StarSystemLoader:
             except KeyError:
                 obj_radius = 5000 * u.km
 
-            try:
-                day_length = obj['body_rotation']['period']
-            except KeyError:
-                day_length = 0
+            day_length = 0
+            if 'body_rotation' in obj:
+                try:
+                    day_length = obj['body_rotation']['period']
+                    obliquity = obj['body_rotation']['obliquity']
+                except KeyError:
+                    obliquity = 0
 
             try:
                 obj_color = obj['color']
@@ -101,7 +104,7 @@ class StarSystemLoader:
 
             sso = StarSystemObject(
                 self.universe, obj_mass, obj_pos, obj_vel,
-                name=obj_name, radius=obj_radius, period=day_length,
+                name=obj_name, radius=obj_radius, period=day_length, obliquity=obliquity,
                 is_star=is_star, temp=obj_temp, color=obj_color,
             )
             system.append(LoadedObject(sso, textures, model))
