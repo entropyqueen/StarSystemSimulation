@@ -24,7 +24,7 @@ class ObjectDisplay:
         self.history_size = config.HISTORY_SIZE
         self.history_points = collections.deque([], self.history_size)
         self.history_steps_ctr = 0
-        self.history = []
+        self.history = collections.deque([], self.history_size)
 
         self.designation_name = self.obj.name.lower().replace(" ", "_")
 
@@ -129,7 +129,9 @@ class ObjectDisplay:
                     node = lines.create()
                     np = NodePath(node)
                     np.reparentTo(render)
-                    self.history.append(np)
+                    if len(self.history_points) >= config.HISTORY_SIZE:
+                        self.history.pop().removeNode()
+                    self.history.appendleft(np)
 
     def update(self):
         dt = globalClock.getDt()
