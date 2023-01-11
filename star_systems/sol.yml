@@ -10,7 +10,7 @@ config:
   # however, a really small dt will make the simulation really slow.
   # It is expressed using the time unit in the yaml file
   # if not specified, we use SIM_DT in config.py
-  dt: 1
+  dt: 12
 
   # indicates to panda3d that we want to start the simulation with a specific zoom value
   base_zoom: 1.0e-7

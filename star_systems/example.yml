@@ -8,7 +8,8 @@ config:
   # however, a really small dt will make the simulation really slow.
   # It is expressed using the time unit in the yaml file
   # if not specified, we use SIM_DT in config.py
-  dt: 3600
+  dt: 100
+  base_zoom: 1.0e-4
 
 # Units are used to specify dimensions in the yaml file
 # units are from https://docs.astropy.org/en/stable/units/index.html

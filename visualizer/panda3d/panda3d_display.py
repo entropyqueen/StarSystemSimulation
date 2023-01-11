@@ -55,6 +55,7 @@ class Panda3dDisplay(ShowBase):
         ss_loader = StarSystemLoader(self.universe)
         system, self.units, cfg = ss_loader.load(star_system_path)
 
+        # Create ObjectDisplay from SSOs
         for obj in system:
             textures = obj.textures
             model = obj.model_path
@@ -65,6 +66,7 @@ class Panda3dDisplay(ShowBase):
                     model_path=model, textures=textures
                 )
             )
+        # Handle stars lighting stuff up
         for obj1 in self.objects_to_display:
             if obj1.obj.is_star:
                 for obj2 in self.objects_to_display:
@@ -73,8 +75,13 @@ class Panda3dDisplay(ShowBase):
 
         self.selected_object = self.objects_to_display[self.selected_object_iter]
 
+        # Setup sim's specific config
         if 'base_zoom' in cfg:
-            self.zoom_factor = cfg['base_zoom']
+            # convert stuff because pyyaml parses exponent notation like fart
+            if isinstance(cfg['base_zoom'], str):
+                self.zoom_factor = int(cfg['base_zoom'])
+            else:
+                self.zoom_factor = cfg['base_zoom']
 
         # Launch simulation
         self.update_task = self.taskMgr.add(self.update, 'update')
