@@ -61,12 +61,13 @@ class StarSystemLoader:
                 obj_radius = 5000 * u.km
 
             day_length = 0
+            obliquity = 0
             if 'body_rotation' in obj:
                 try:
                     day_length = obj['body_rotation']['period']
                     obliquity = obj['body_rotation']['obliquity']
                 except KeyError:
-                    obliquity = 0
+                    pass
 
             try:
                 obj_color = obj['color']
