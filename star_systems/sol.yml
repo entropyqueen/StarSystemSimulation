@@ -12,6 +12,9 @@ config:
   # if not specified, we use SIM_DT in config.py
   dt: 1
 
+  # indicates to panda3d that we want to start the simulation with a specific zoom value
+  base_zoom: 1.0e-7
+
 # Units are used to specify dimensions in the yaml file
 # units are from https://docs.astropy.org/en/stable/units/index.html
 # use adequate types of units or things will break ¯\_(ツ)_/¯

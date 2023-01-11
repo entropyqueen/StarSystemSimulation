@@ -53,7 +53,7 @@ class Panda3dDisplay(ShowBase):
 
         # Load Star System
         ss_loader = StarSystemLoader(self.universe)
-        system, self.units, _ = ss_loader.load(star_system_path)
+        system, self.units, cfg = ss_loader.load(star_system_path)
 
         for obj in system:
             textures = obj.textures
@@ -72,6 +72,9 @@ class Panda3dDisplay(ShowBase):
                         obj2.obj_model.setLight(obj1.light_node_path)
 
         self.selected_object = self.objects_to_display[self.selected_object_iter]
+
+        if 'base_zoom' in cfg:
+            self.zoom_factor = cfg['base_zoom']
 
         # Launch simulation
         self.update_task = self.taskMgr.add(self.update, 'update')
