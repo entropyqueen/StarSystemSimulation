@@ -1,0 +1,40 @@
+
+config:
+  dt: 1
+  base_zoom: 1.0e-4
+
+units:
+  distance: km
+  mass: Mearth
+  time: h
+
+system:
+ - name: 'Earth'
+   position: 'get_from_nasa_Horizons'
+   velocity: 'get_from_nasa_Horizons'
+   horizons_id: '399'
+   horizons_location_ref: '@399'
+   mass: 1
+   radius: 6371
+   body_rotation:
+     period: 24.0
+     obliquity: 23.44
+   color: '#287ab8'
+   texture:
+     color: 'textures/2k_earth_daymap.jpg'
+     specular: 'textures/2k_earth_specular_map.tif'
+     normal: 'textures/2k_earth_normal_map.tif'
+
+ - name: 'Moon'
+   position: 'get_from_nasa_Horizons'
+   velocity: 'get_from_nasa_Horizons'
+   horizons_id: '301'
+   horizons_location_ref: '@399'
+   mass: 0.0123
+   radius: 1737.4
+   body_rotation:
+     period: 708.7
+     obliquity: 1.54
+   color: '#7d7d7d'
+   texture:
+     color: 'textures/2k_moon.jpg'
