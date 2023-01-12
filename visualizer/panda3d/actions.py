@@ -1,6 +1,6 @@
 from panda3d.core import LPoint3f, WindowProperties
 from direct.gui.OnscreenText import OnscreenText, TextNode
-
+import numpy as np
 
 import config
 
@@ -76,15 +76,23 @@ class Actions:
         return self.base.selected_object
 
     def focus_camera_on(self, obj):
-        # TODO: Adjust zoom object to screen size
         x, y, z = obj.pos
-
-        dx = x + 10*obj.scale
-        dy = y - 10*obj.scale
+        dx = x + 10 * obj.scale
+        dy = y - 10 * obj.scale
         dz = z
 
-        new_pos = LPoint3f(dx, dy, dz)
-        self.base.cam.setPos(new_pos)
+        try:
+            # if there is a star we want to be between a star and the object to look at
+            light = render.find('**/*_light')
+            if light.getPos() != obj.pos:
+                light_direction = (obj.pos - light.getPos()) / np.linalg.norm(obj.pos - light.getPos())
+                pos = light_direction * (np.linalg.norm(obj.pos - light.getPos()) - 10 * obj.scale)
+            else:
+                pos = LPoint3f(dx, dy, dz)
+        except AssertionError:
+            pos = LPoint3f(dx, dy, dz)
+
+        self.base.cam.setPos(pos)
         self.base.cam.lookAt(obj.obj_node_path)
 
     def focus_camera_on_prev(self):
