@@ -20,6 +20,11 @@ We then compute the position of each object through n-body simulation.
 
 ## Usage:
 
+Install git-lfs
+```bash
+$ sudo apt install git-lfs
+```
+
 Clone the repo:
 ```bash
 $ git clone https://github.com/entropyqueen/StarSystemSimulation.git
@@ -31,7 +36,6 @@ $ python3 -m venv .env
 $ . .env/bin/activate
 $ pip install -r requirements.txt
 ```
-
 
 There are three interfaces possible, one using `matplotlib`, the other using `panda3d`, and the latest which only display text informations
 
