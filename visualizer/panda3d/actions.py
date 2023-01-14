@@ -104,7 +104,8 @@ class Actions:
             self.base.cam.lookAt(self.select_object_next().obj_node_path)
 
     def focus_selected(self):
-        if self.base.selected_object is not None:
+        self.base.lock_focus = not self.base.lock_focus
+        if self.base.selected_object is not None and self.base.lock_focus:
             self.focus_camera_on(self.base.selected_object)
 
     def sim_pause(self):

@@ -37,6 +37,7 @@ class Panda3dDisplay(ShowBase):
 
         # Controls initialization
         self.disableMouse()  # disable panda's default mouse controls
+        self.lock_focus = False
         self.inputs = Inputs(self)
 
         # Initialize objects
@@ -86,7 +87,7 @@ class Panda3dDisplay(ShowBase):
         # Launch simulation
         self.update_task = self.taskMgr.add(self.update, 'update')
         self.inputs.start_task()
-        self.inputs.actions.focus_selected()
+        self.inputs.actions.focus_camera_on(self.selected_object)
 
     def init_default_display(self):
         self.setBackgroundColor(*hex_to_rgb_norm('#000000'))
@@ -100,6 +101,8 @@ class Panda3dDisplay(ShowBase):
 
         for obj in self.objects_to_display:
             obj.update()
+        if self.lock_focus:
+            self.inputs.actions.focus_camera_on(self.selected_object)
         return task.cont
 
     def display_infos(self):
