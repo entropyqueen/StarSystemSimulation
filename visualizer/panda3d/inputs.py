@@ -63,20 +63,28 @@ class Inputs:
         r = self.cam_rotation_speed
 
         if self.keymap_rep['FWD']:
+            self.base.lock_focus = False
             self.base.cam.setPos(self.base.cam, Vec3(0, s * dt, 0))
         if self.keymap_rep['BACKWD']:
+            self.base.lock_focus = False
             self.base.cam.setPos(self.base.cam, Vec3(0, -s * dt, 0))
         if self.keymap_rep['RIGHT']:
+            self.base.lock_focus = False
             self.base.cam.setPos(self.base.cam, Vec3(s * dt, 0, 0))
         if self.keymap_rep['LEFT']:
+            self.base.lock_focus = False
             self.base.cam.setPos(self.base.cam, Vec3(-s * dt, 0, 0))
         if self.keymap_rep['UP']:
+            self.base.lock_focus = False
             self.base.cam.setPos(self.base.cam, Vec3(0, 0, s * dt))
         if self.keymap_rep['DOWN']:
+            self.base.lock_focus = False
             self.base.cam.setPos(self.base.cam, Vec3(0, 0, -s * dt))
         if self.keymap_rep['ROLL_R']:
+            self.base.lock_focus = False
             self.base.cam.setHpr(self.base.cam, Vec3(0, 0, r * dt))
         if self.keymap_rep['ROLL_L']:
+            self.base.lock_focus = False
             self.base.cam.setHpr(self.base.cam, Vec3(0, 0, -r * dt))
         if self.keymap_rep['MVT_SPEED+']:
             self.cam_speed *= config.CAM_SPEED_STEP
