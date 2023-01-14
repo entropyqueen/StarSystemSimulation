@@ -1,6 +1,10 @@
+import sys
+sys.path.append("physics/build/")
+print(sys.path)
+from PyCppInterface import PyCppInterface, StarSystemObjectCpp
+
 import numpy as np
 from astropy import units as u
-from astropy import constants as c
 
 import config
 from utils import convert_K_to_RGB
@@ -57,14 +61,15 @@ class Universe:
         for obj in self.objects:
             obj.update_position(self.dt)
 
+
 class StarSystemObject:
 
     def __init__(
             self,
             universe,
             mass,
-            position=(0, 0, 0) * u.km,
-            velocity=(0, 0, 0) * (u.km/u.h),
+            position=np.array([0, 0, 0], dtype=np.double) * u.km,
+            velocity=np.array([0, 0, 0], dtype=np.double) * (u.km / u.h),
             color='#000000',
             name='object',
             radius=10 * u.km,
@@ -72,13 +77,19 @@ class StarSystemObject:
             obliquity=0,
             is_star=False,
             temp=5000 * u.K,
+            d_unit=u.m,
+            t_unit=u.s,
+            m_unit=u.kg,
     ):
         # Setting physical properties
         self.universe = universe
+        self.d_unit = d_unit
+        self.t_unit = t_unit
+        self.m_unit = m_unit
         self.mass = mass
-        self.position = position  # * u.AU
-        self.velocity = velocity  # * u.AU / u.d
-        self.acc = np.zeros(3, dtype=np.double)  # * u.AU / (u.d ** 2)
+        self.position = position
+        self.velocity = velocity
+        self.acc = np.zeros(3, dtype=np.double)
 
         self.f = 0
 
@@ -107,24 +118,24 @@ class StarSystemObject:
             f'f:\t\t\t{np.linalg.norm(self.acc * self.mass).to(u.N):.3e}'
         return s
 
-    # TODO: Use CPP or Cython to accelerate those computation (+ parallelize)
-    # COMPUTE ACCELERATION
-    def calculate_acceleration(self, other):
-        dst = np.linalg.norm(other.position - self.position)  # distance in AU
-        unit_v = (other.position - self.position) / dst
-        self.f = ((c.G * self.mass * other.mass) / (dst ** 2)) * unit_v
-        if config.DEBUG:
-            print(f'F between {self.name} and {other.name}: {np.linalg.norm(self.f).to(u.N):.2e}')
-        return (self.f / self.mass).to(u.AU / u.d ** 2)
-
-    # INTEGRATE THE POSITIONS OF BODIES
     def update_position(self, dt):
-        acc = np.zeros(3, dtype=np.double) * u.AU / (u.d ** 2)
-        for body in self.universe.objects:
-            if self == body:
-                continue
-            a = self.calculate_acceleration(body)
-            acc += a
-        self.velocity += acc * dt
-        self.position += self.velocity * dt
-        self.acc = acc
+
+        # prepare call to cpp implementation
+        lst = []
+        for o in self.universe.objects:
+            print(o.velocity)
+            lst.append(StarSystemObjectCpp(
+                o.mass.to(u.kg).value,
+                o.position.to(u.m).value,
+                o.velocity.to(u.m / u.s).value,
+            ))
+
+        # Call cpp implementation
+        pycppiface = PyCppInterface(lst)
+        pycppiface.update_position(dt.to(u.s).value)
+        lst = pycppiface.get_lst()
+
+        # convert from cpp implementation
+        for i, o in enumerate(lst):
+            self.universe.objects[i].position = (o.pos * u.m).to(self.d_unit)
+            self.universe.objects[i].velocity = (o.vel * (u.m / u.s)).to(self.d_unit/self.t_unit)

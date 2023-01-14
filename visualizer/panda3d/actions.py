@@ -132,7 +132,7 @@ class Actions:
         else:
             if self.pause_text_node is not None:
                 self.pause_text_node.hide()
-            help_text = 'Help:\n  Repeating keys:'
+            help_text = 'Help:\n  Repeating keys:\n'
             for k, v in config.KEYMAP_REP.items():
                 help_text += f'    {k}:\t\t{v}\n'
             help_text += '\n  One time keys:\n'

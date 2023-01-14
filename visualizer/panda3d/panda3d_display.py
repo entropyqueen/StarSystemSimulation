@@ -103,6 +103,7 @@ class Panda3dDisplay(ShowBase):
             obj.update()
         if self.lock_focus:
             self.inputs.actions.focus_camera_on(self.selected_object)
+
         return task.cont
 
     def display_infos(self):

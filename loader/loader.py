@@ -107,6 +107,7 @@ class StarSystemLoader:
                 self.universe, obj_mass, obj_pos, obj_vel,
                 name=obj_name, radius=obj_radius, period=day_length, obliquity=obliquity,
                 is_star=is_star, temp=obj_temp, color=obj_color,
+                d_unit=d_unit, t_unit=t_unit, m_unit=m_unit,
             )
             system.append(LoadedObject(sso, textures, model))
         return system
