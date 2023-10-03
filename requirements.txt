@@ -32,6 +32,6 @@ scipy==1.9.3
 SecretStorage==3.3.3
 six==1.16.0
 soupsieve==2.3.2.post1
-urllib3==1.26.13
+urllib3==1.26.17
 webencodings==0.5.1
 zipp==3.11.0
